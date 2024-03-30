@@ -1,0 +1,5 @@
+**/.DS_Store
+**/*.air
+**/*.metallib
+**/*.metallibsym
+*.code-workspace

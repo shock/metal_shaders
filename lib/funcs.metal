@@ -1,3 +1,1 @@
-float4 SS4(float4 in) {
-  return SS(SS(SS(SS(in))));
-}
+#define SS4(in) SS(SS(SS(SS(in))))

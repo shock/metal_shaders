@@ -1,13 +1,20 @@
-#version 410
-uniform vec2 u_resolution;
-uniform float u_time;
-uniform vec2 u_mouse_b;
-uniform vec4 u_date;
-uniform sampler2D u_tex0;
+#include <metal_stdlib>
+using namespace metal;
 
+#pragma arguments
 
+float2 u_resolution;
+float u_time;
+float2 u_mouse_b;
+vec4 u_date;
+sampler2D u_tex0;
+
+#pragma body
+#pragma transparent
+
+constant float2 u_mouse_b = float2(0);
 #define iResolution u_resolution
-#define iMouse vec3(u_mouse_b,0)
+#define iMouse float3(u_mouse_b,0)
 #define iTime u_time
 #define ut iTime
 #define kPI 3.14159265
@@ -22,7 +29,7 @@ uniform sampler2D u_tex0;
 #define p(x,y) pow(x,y)
 #define r(x) f(sin(x)*100000.0)
 #define n(x) normalize(x)
-#define v3 vec3(0)
+#define v3 float3(0)
 #define S(a,b,x) smoothstep(a,b,x)
 #define SS(x) smoothstep(0.,1.,x)
 #define SC(x,a,b) (smoothstep(0.,1.,(x-a)/(b-a))*(b-a)+a)
@@ -38,20 +45,21 @@ float notch(float t, float a, float b, float w ) {
 #define SMin(x,m) smoothMin(x,m)
 #define inf 1e20
 
-vec2 m = vec2(iMouse.xy/iResolution);
-vec2 md = ((m - 0.5) * 2.);
-float t = ut;
-#define ssigScale (1./0.4813)
-float ssig = sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(t))))))))))*ssigScale;
-vec2 tc1;
-float SCALE = 1.;
-float cameraDistance = 1.;
-float lineWidth = (0.004*SCALE*cameraDistance);
-float cSpread = 0.05 * SCALE;
-float t1, t2, t3, t4;
-float s1, s2, s3, s4;
+// constant float2 m = float2(iMouse.xy/iResolution);
+constant float2 m = float2(1);
+// float2 md = ((m - 0.5) * 2.);
+constant float t = ut;
+constant #define ssigScale (1./0.4813)
+constant float ssig = sin(sin(sin(sin(sin(sin(sin(sin(sin(sin(t))))))))))*ssigScale;
+constant float2 tc1;
+constant float SCALE = 1.;
+constant float cameraDistance = 1.;
+constant float lineWidth = (0.004*SCALE*cameraDistance);
+constant float cSpread = 0.05 * SCALE;
+constant float t1, t2, t3, t4;
+constant float s1, s2, s3, s4;
 // float cSpread = 0.;
-mat3 pm, pmi;
+constant mat3 pm, pmi;
 
 #define fill(x,f) (1. - smoothstep(0.,lineWidth*(f),(x)))
 #define stroke(x,f) (1. - smoothstep(0.,lineWidth*(f),abs(x)))
@@ -60,20 +68,20 @@ mat3 pm, pmi;
 #define T (ut*0.25)
 
 struct RI { // 3D Ray Info
-  vec3 pos;
+  float3 pos;
   float d;
-  vec3 rd;
-  vec3 nor;
+  float3 rd;
+  float3 nor;
   int mid;
-  vec3 col;
+  float3 col;
   float specPower;
   float specLevel;
 };
 
 struct DI { // 2D Distance Info
-  vec2 pos;
+  float2 pos;
   float d;
-  vec3 col;
+  float3 col;
   float a;
   int mid;
   float specPower;
@@ -92,31 +100,31 @@ DI minDI( DI di1, DI di2 ) {
 
 // Misc Functions
 
-void pR(inout vec2 p,float a) {
-	p=cos(a)*p+sin(a)*vec2(p.y,-p.x);
+void pR(inout float2 p,float a) {
+	p=cos(a)*p+sin(a)*float2(p.y,-p.x);
 }
 
 // Noise functions
 
-float random (in vec2 st) {
+float random (in float2 st) {
     return fract(sin(dot(st.xy,
-                         vec2(12.9898,78.233)))
+                         float2(12.9898,78.233)))
                 * 43758.5453123);
 }
 
 // Value noise by Inigo Quilez - iq/2013
 // https://www.shadertoy.com/view/lsf3WH
-float noise(vec2 st) {
-  vec2 i = floor(st);
-  vec2 f = fract(st);
-  vec2 u = f*f*(3.0-2.0*f);
-  return mix( mix( random( i + vec2(0.0,0.0) ),
-                    random( i + vec2(1.0,0.0) ), u.x),
-              mix( random( i + vec2(0.0,1.0) ),
-                    random( i + vec2(1.0,1.0) ), u.x), u.y);
+float noise(float2 st) {
+  float2 i = floor(st);
+  float2 f = fract(st);
+  float2 u = f*f*(3.0-2.0*f);
+  return mix( mix( random( i + float2(0.0,0.0) ),
+                    random( i + float2(1.0,0.0) ), u.x),
+              mix( random( i + float2(0.0,1.0) ),
+                    random( i + float2(1.0,1.0) ), u.x), u.y);
 }
 
-float lines(in vec2 pos, float b){
+float lines(in float2 pos, float b){
     float scale = 10.0;
     pos *= scale;
     return smoothstep(0.0,
@@ -126,48 +134,48 @@ float lines(in vec2 pos, float b){
 
 // 2D Distance Functions
 
-float circleDist(vec2 p, float radius) {
+float circleDist(float2 p, float radius) {
 	return length(p) - radius;
 }
 
-float sdSegment( vec2 p, vec2 a, vec2 b ) {
-  vec2 pa = p-a, ba = b-a;
+float sdSegment( float2 p, float2 a, float2 b ) {
+  float2 pa = p-a, ba = b-a;
   float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
   return length( pa - ba*h );
 }
 
-float roundSeg( vec2 p, vec2 a, vec2 b, float r ) {
+float roundSeg( float2 p, float2 a, float2 b, float r ) {
   return sdSegment( p, a, b ) - r;
 }
 
-float sdTrapezoid( in vec2 p, in float r1, float r2, float he )
+float sdTrapezoid( in float2 p, in float r1, float r2, float he )
 {
-    vec2 k1 = vec2(r2,he);
-    vec2 k2 = vec2(r2-r1,2.0*he);
+    float2 k1 = float2(r2,he);
+    float2 k2 = float2(r2-r1,2.0*he);
     p.x = abs(p.x);
-    vec2 ca = vec2(p.x-min(p.x,(p.y<0.0)?r1:r2), abs(p.y)-he);
-    vec2 cb = p - k1 + k2*clamp( dot(k1-p,k2)/dot(k2,k2), 0.0, 1.0 );
+    float2 ca = float2(p.x-min(p.x,(p.y<0.0)?r1:r2), abs(p.y)-he);
+    float2 cb = p - k1 + k2*clamp( dot(k1-p,k2)/dot(k2,k2), 0.0, 1.0 );
     float s = (cb.x<0.0 && ca.y<0.0) ? -1.0 : 1.0;
     return s*sqrt( min(dot(ca,ca),dot(cb,cb)) );
 }
 
 // 3D ray intersection functions
 
-float pD(vec3 ro,vec3 rd,vec4 p) {
+float pD(float3 ro,float3 rd,vec4 p) {
 	return -(dot(ro,p.xyz)+p.w)/dot(rd,p.xyz);
 }
 
-vec4 pI(vec3 ro, vec3 rd,vec4 p) {
+vec4 pI(float3 ro, float3 rd,vec4 p) {
 	float d=pD(ro,rd,p);
-  vec3 i = ro+rd*d;
+  float3 i = ro+rd*d;
 	return vec4(i,d);
 }
 
 // cylinder defined by extremes pa and pb, and radious ra
-vec4 cylIntersect( in vec3 ro, in vec3 rd, in vec3 pa, in vec3 pb, float ra )
+vec4 cylIntersect( in float3 ro, in float3 rd, in float3 pa, in float3 pb, float ra )
 {
-    vec3 ca = pb-pa;
-    vec3 oc = ro-pa;
+    float3 ca = pb-pa;
+    float3 oc = ro-pa;
     float caca, card, caoc, a, b, c, h, t, y;
     caca = dot(ca,ca); card = dot(ca,rd); caoc = dot(ca,oc);
     a = caca - card*card; b = caca*dot( oc, rd) - caoc*card;
@@ -185,7 +193,7 @@ vec4 cylIntersect( in vec3 ro, in vec3 rd, in vec3 pa, in vec3 pb, float ra )
 }
 
 // torus distance
-float torIntersect( in vec3 ro, in vec3 rd, in vec2 tor )
+float torIntersect( in float3 ro, in float3 rd, in float2 tor )
 {
     float po = 1.0;
     float Ra2 = tor.x*tor.x;
@@ -223,7 +231,7 @@ float torIntersect( in vec3 ro, in vec3 rd, in vec2 tor )
         h = sqrt(h);
         float v = sign(R+h)*pow(abs(R+h),1.0/3.0); // cube root
         float u = sign(R-h)*pow(abs(R-h),1.0/3.0); // cube root
-        vec2 s = vec2( (v+u)+4.0*c2, (v-u)*sqrt(3.0));
+        float2 s = float2( (v+u)+4.0*c2, (v-u)*sqrt(3.0));
         float y = sqrt(0.5*(length(s)+s.x));
         float x = 0.5*s.y/y;
         float r = 2.0*c1/(x*x+y*y);
@@ -253,14 +261,14 @@ float torIntersect( in vec3 ro, in vec3 rd, in vec2 tor )
     return t;
 }
 
-vec3 torNormal( in vec3 pos, vec2 tor )
+float3 torNormal( in float3 pos, float2 tor )
 {
-    return normalize( pos*(dot(pos,pos)-tor.y*tor.y - tor.x*tor.x*vec3(1.0,1.0,-1.0)));
+    return normalize( pos*(dot(pos,pos)-tor.y*tor.y - tor.x*tor.x*float3(1.0,1.0,-1.0)));
 }
 
 // Sphere distance
-float sD(vec3 ro,vec3 rd,vec4 sph) {
-	vec3 oc=ro-sph.xyz;
+float sD(float3 ro,float3 rd,vec4 sph) {
+	float3 oc=ro-sph.xyz;
 	float b=dot(oc,rd), c=dot(oc,oc)-sph.w*sph.w, h=b*b-c;
 	if(h<0.0) return -1.0;
 	return -b-sqrt(h);
@@ -269,37 +277,37 @@ float sD(vec3 ro,vec3 rd,vec4 sph) {
 
 // Procedural Textures
 
-float chex(vec2 uv)
+float chex(float2 uv)
 {
-  vec2 w = fwidth(uv) + 0.01;
+  float2 w = fwidth(uv) + 0.01;
   // w = w / 2. + 0.01;
-  vec2 i = 2.0*(abs(f((uv-0.5*w)*0.5)-0.5)-abs(f((uv+0.5*w)*0.5)-0.5))/w;
+  float2 i = 2.0*(abs(f((uv-0.5*w)*0.5)-0.5)-abs(f((uv+0.5*w)*0.5)-0.5))/w;
   return 0.5 - 0.5*i.x*i.y;
 }
 
-float grid( vec2 uv ) {
-  vec2 w = fwidth(uv) + 0.2;
-  vec2 i = 2.0 * ( length( fract((uv-0.5)*0.5) - 0.5 ) - length(fract((uv+0.5)*0.5)-0.5) ) / w;
+float grid( float2 uv ) {
+  float2 w = fwidth(uv) + 0.2;
+  float2 i = 2.0 * ( length( fract((uv-0.5)*0.5) - 0.5 ) - length(fract((uv+0.5)*0.5)-0.5) ) / w;
   float r = length((fract(i*0.5) - 0.5)*2.9);
   r = length(i); r = 1. - r; r = clamp(r, 0., 1.); r = mix( r, 0.28, min(length(fwidth(uv)),0.9));
   return r;
 }
 
-float tiles( vec2 uv ) {
-  vec2 w = fwidth(uv) + 0.1;
-  vec2 i = 2.0 * ( length( fract((uv-0.5*w)*0.5) - 0.5 ) - length(fract((uv+0.5*w)*0.5)-0.5) ) / w;
+float tiles( float2 uv ) {
+  float2 w = fwidth(uv) + 0.1;
+  float2 i = 2.0 * ( length( fract((uv-0.5*w)*0.5) - 0.5 ) - length(fract((uv+0.5*w)*0.5)-0.5) ) / w;
   float r = length((fract(i*0.5) - 0.5)*2.9);
   r = length(i); r = 1. - r; r = clamp(r, 0., 1.); r = mix( r, 0.28, min(length(fwidth(uv)),0.9));
   return r;
 }
 
-float dots(vec2 uv) {
+float dots(float2 uv) {
 	return mix(1.-l(f(uv)*2.-1.),0.25,min(l(fwidth(uv)),1.));
 }
 
-float wood( vec2 uv ) {
+float wood( float2 uv ) {
   float w = l(fwidth(uv))*18.;
-  uv *= vec2(1.,0.3);
+  uv *= float2(1.,0.3);
   pR(uv, noise(uv));
   float p = lines(uv,.5);
   return mix(p,0.5,SS(w));
@@ -320,23 +328,23 @@ float ai( float x, float m, float n ) {
  WWWWW  WWWWW  WWWWW  W    W  WWWWW
 
 */
-vec3 circle = vec3(0,0,0.3);
-vec3 faceCenter = vec3(0,0,0);
-vec3 rimCenter = faceCenter - vec3(0,0,0.01);
-vec3 faceBack = vec3(0,0,-1.1);
+float3 circle = float3(0,0,0.3);
+float3 faceCenter = float3(0,0,0);
+float3 rimCenter = faceCenter - float3(0,0,0.01);
+float3 faceBack = float3(0,0,-1.1);
 float faceRadius = 2.0;
 float rimThickness = 0.12;
 float innerRadius = faceRadius - rimThickness;
-vec2 rimTorus = vec2( faceRadius, rimThickness );
+float2 rimTorus = float2( faceRadius, rimThickness );
 float bubbleRad = 8.*faceRadius;
-// vec2 rimTorus = vec2( rimInside, rimTickness );
-vec4 facePlane = vec4(n(vec3(0,0,1)),-0.025);
-vec4 hourPlane = vec4(n(vec3(0,0,1)),facePlane.w-0.05);
-vec4 minutePlane = vec4(n(vec3(0,0,1)),hourPlane.w-0.02);
-vec4 secondPlane = vec4(n(vec3(0,0,1)),minutePlane.w-0.02);
+// float2 rimTorus = float2( rimInside, rimTickness );
+vec4 facePlane = vec4(n(float3(0,0,1)),-0.025);
+vec4 hourPlane = vec4(n(float3(0,0,1)),facePlane.w-0.05);
+vec4 minutePlane = vec4(n(float3(0,0,1)),hourPlane.w-0.02);
+vec4 secondPlane = vec4(n(float3(0,0,1)),minutePlane.w-0.02);
 vec4 bubble = vec4(0,0,-secondPlane.w+0.02-bubbleRad,bubbleRad);
-vec4 wallPlane = vec4(n(vec3(0,0,1)),rimThickness*1.5);
-vec3 lightPos = vec3( faceRadius*1.,0.,11.4);
+vec4 wallPlane = vec4(n(float3(0,0,1)),rimThickness*1.5);
+float3 lightPos = float3( faceRadius*1.,0.,11.4);
 float lightIntensity = 10.;
 float ambientLevel = 2.;
 
@@ -348,12 +356,12 @@ float ambientLevel = 2.;
 #define MINUTE 5
 #define SECOND 6
 
-#define WALL_COLOR vec3(0.395,0.25, 0.21)*0.66
-// #define FACE_COLOR vec3(0.4,0.5,0.78) * 0.95
-#define FACE_COLOR vec3(0.46,0.55,0.78) * 0.95
-// #define RIM_COLOR vec3(0.285,0.38, 0.4)*1.
-#define RIM_COLOR vec3(0.385+sin(t*0.125)*0.1,0.43, 0.2)*1.
-#define HAND_COLOR vec3(0.1)
+#define WALL_COLOR float3(0.395,0.25, 0.21)*0.66
+// #define FACE_COLOR float3(0.4,0.5,0.78) * 0.95
+#define FACE_COLOR float3(0.46,0.55,0.78) * 0.95
+// #define RIM_COLOR float3(0.285,0.38, 0.4)*1.
+#define RIM_COLOR float3(0.385+sin(t*0.125)*0.1,0.43, 0.2)*1.
+#define HAND_COLOR float3(0.1)
 
 RI newRI() {
   RI ri; ri.d = inf; ri.mid = BACK; ri.col=v3; ri.specPower = 0.; ri.specLevel = 1.; return ri;
@@ -374,10 +382,10 @@ DI newDI() {
 #endif
 
 float handOffset = innerRadius * 0.055;
-DI hand( vec2 pos, float angle, float length, float r, float d ) {
+DI hand( float2 pos, float angle, float length, float r, float d ) {
   length *= 0.94;
   pR(pos, -angle);
-  pos = pos - vec2(0,length - handOffset);
+  pos = pos - float2(0,length - handOffset);
   DI di = newDI();
   di.d = sdTrapezoid( pos, r, r*0.28, length );
   di.col = HAND_COLOR;
@@ -397,25 +405,25 @@ float sAngle = mod(seconds, 60.);
 float handWidth = 0.035 * innerRadius;
 float minHandLength = 0.49 * innerRadius;
 float hourHandLength = 0.32 * innerRadius;
-DI minuteHand( vec2 pos, float d ) {
+DI minuteHand( float2 pos, float d ) {
   return hand( pos, mAngle, minHandLength, handWidth, d );
 }
-DI hourHand( vec2 pos, float d ) {
+DI hourHand( float2 pos, float d ) {
   return hand( pos, hAngle, hourHandLength, handWidth, d );
 }
 
 float secHandLength = 0.83 * innerRadius;
 float secHandWidth = 0.013 * innerRadius;
-DI secondHand( vec2 pos, float d ) {
-  vec2 a = faceCenter.xy + vec2(0,-0.02);
-  vec2 b = faceCenter.xy + vec2(0, secHandLength);
+DI secondHand( float2 pos, float d ) {
+  float2 a = faceCenter.xy + float2(0,-0.02);
+  float2 b = faceCenter.xy + float2(0, secHandLength);
   pR(a, sAngle); pR(b, sAngle);
   DI di = newDI();
   di.d = roundSeg(pos, a, b, secHandWidth);
   #ifdef STEREO
-  di.col = vec3(0.7);
+  di.col = float3(0.7);
   #else
-  di.col = vec3(0.7,0,0);
+  di.col = float3(0.7,0,0);
   #endif
   di.a = fillGlow(di.d,6.*d) * 0.7;
   di.specPower = 30.;
@@ -423,10 +431,10 @@ DI secondHand( vec2 pos, float d ) {
 }
 
 float faceZ = faceRadius-rimThickness+0.0008;
-DI faceColor( vec3 pos, float dt ) {
+DI faceColor( float3 pos, float dt ) {
   DI di = newDI();
-  vec3 c; vec2 p; float d;
-  c = vec3(0,0,faceZ);
+  float3 c; float2 p; float d;
+  c = float3(0,0,faceZ);
   p = pos.xy - c.xy;
   d = circleDist( p, c.z );
   di.col = FACE_COLOR;
@@ -437,15 +445,15 @@ DI faceColor( vec3 pos, float dt ) {
   return di;
 }
 
-DI hourColor( vec3 p, float d ) {
+DI hourColor( float3 p, float d ) {
   return hourHand(p.xy, pow(d,0.7));
 }
 
-DI minuteColor( vec3 p, float d ) {
+DI minuteColor( float3 p, float d ) {
   return minuteHand(p.xy, pow(d,0.7));
 }
 
-DI secondColor( vec3 p, float d ) {
+DI secondColor( float3 p, float d ) {
   return secondHand(p.xy, pow(d,0.7));
 }
 
@@ -456,7 +464,7 @@ float test = 1;
 float test = 0;
 #endif
 
-RI wall( vec3 ro, vec3 rd) {
+RI wall( float3 ro, float3 rd) {
   RI ri = newRI();
   if(test == 1) return ri;
   vec4 pi;
@@ -471,8 +479,8 @@ RI wall( vec3 ro, vec3 rd) {
     float w = l(fwidth(pi.x));
     n = mix(n,1.,SS(w*5.));
 #ifdef REAL_WOOD
-    vec3 wc = texture(u_tex0, pi.yx*0.2).rgb;
-    ri.col = wc * vec3(0.5,0.4,0.99);
+    float3 wc = texture(u_tex0, pi.yx*0.2).rgb;
+    ri.col = wc * float3(0.5,0.4,0.99);
 #else
     ri.col = (WALL_COLOR + wood(pi.xy*2.-2.85) * 0.07) * SMin(n,0.4);
 #endif
@@ -481,7 +489,7 @@ RI wall( vec3 ro, vec3 rd) {
   return ri;
 }
 
-RI rim( vec3 ro, vec3 rd ) {
+RI rim( float3 ro, float3 rd ) {
   RI ri = newRI();
   // if(test == 1) return ri;
   float td = torIntersect( ro - rimCenter, rd, rimTorus );
@@ -497,14 +505,14 @@ RI rim( vec3 ro, vec3 rd ) {
   return ri;
 }
 
-RI map( vec3 ro, vec3 rd ) {
+RI map( float3 ro, float3 rd ) {
   return minRI( wall(ro, rd), rim(ro, rd) );
 }
 
-float shadow( vec3 pos, vec3 nor, int mid, float d ) {
+float shadow( float3 pos, float3 nor, int mid, float d ) {
   // return 1.;
-  vec3 ro = pos + 0.005 * nor;
-  vec3 rd = n(lightPos - pos);
+  float3 ro = pos + 0.005 * nor;
+  float3 rd = n(lightPos - pos);
   RI sec = newRI();
   sec.d = inf;
   vec4 pi;
@@ -562,29 +570,29 @@ float shadow( vec3 pos, vec3 nor, int mid, float d ) {
   return s;
 }
 
-void light( vec3 pos, vec3 nor, vec3 rd, float specPower, float specLevel, float sh, inout vec3 col ) {
-  vec3 ol = lightPos - pos; float light = 1.;
+void light( float3 pos, float3 nor, float3 rd, float specPower, float specLevel, float sh, inout float3 col ) {
+  float3 ol = lightPos - pos; float light = 1.;
   ol = n(ol);
   float dif = clamp( dot(nor,ol), 0.0, 1.0 );
   float amb = clamp( 0.5 + 0.5*nor.y, 0.5 + 0.5*nor.y, 1.0 );
-  vec3 hal = normalize(-rd+ol);
-  col *= vec3(0.15,0.25,0.35)*amb*ambientLevel + 1.05*vec3(1.0,0.9,0.7)*dif*sh;
+  float3 hal = normalize(-rd+ol);
+  col *= float3(0.15,0.25,0.35)*amb*ambientLevel + 1.05*float3(1.0,0.9,0.7)*dif*sh;
   float spec = pow(clamp(dot(hal,nor),0.0,1.0),30.0);
   // spec = pow(spec,8.);
   // spec = spec * spec;
   spec = pow(spec,specPower);
-  float sl = (1.-length(col*(vec3(0.3,0.5,1)))) * 0.3 * spec * specLevel * sh;
+  float sl = (1.-length(col*(float3(0.3,0.5,1)))) * 0.3 * spec * specLevel * sh;
   // float sl = 0.3 * spec * specLevel * sh;
   // float sl = spec;
   col += sl;
 }
 
 
-vec3 getRayColor( vec3 ro, vec3 rd ) {
+float3 getRayColor( float3 ro, float3 rd ) {
   RI ri = map( ro, rd );
 
   vec4 pi;
-  vec3 pos;
+  float3 pos;
   float bubbleHighlight = 0.;
   float sh = 1.;
 
@@ -645,11 +653,11 @@ vec3 getRayColor( vec3 ro, vec3 rd ) {
       float sd = sD(ro, rd, bubble); // check bubble intersection;
       if( sd > 0. ) {
         pos = ro + rd*sd;
-        vec3 nor = n(pos - bubble.xyz);
-        vec3 reflection = vec3(0.2,0.18,0.18);
+        float3 nor = n(pos - bubble.xyz);
+        float3 reflection = float3(0.2,0.18,0.18);
         light( pos, nor, rd, 30., 3.3333, 1., reflection );
         reflection += 0.02;
-        reflection = pow(reflection,vec3(15.));
+        reflection = pow(reflection,float3(15.));
         ri.col = 1.-((1. - ri.col) * (1. - reflection*0.8));
       }
     }
@@ -658,13 +666,13 @@ vec3 getRayColor( vec3 ro, vec3 rd ) {
   return ri.col;
 }
 
-vec3 hash3( float n ) { return fract(sin(vec3(n,n+1.0,n+2.0))*43758.5453123); }
+float3 hash3( float n ) { return fract(sin(float3(n,n+1.0,n+2.0))*43758.5453123); }
 
-vec3 ff = vec3(0,0,-1);
-vec3 up = vec3(0,1,0);
-mat3 projMatrix(vec3 ff) {
-  vec3 uu = n(cross(ff,up));
-  vec3 vv = n(cross(uu,ff));
+float3 ff = float3(0,0,-1);
+float3 up = float3(0,1,0);
+mat3 projMatrix(float3 ff) {
+  float3 uu = n(cross(ff,up));
+  float3 vv = n(cross(uu,ff));
   mat3 m;
   m[0] = uu;
   m[1] = vv;
@@ -711,24 +719,24 @@ void animate() {
 
 }
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+void mainImage( out vec4 fragColor, in float2 fragCoord ) {
   animate();
-  vec2 q = fragCoord.xy / iResolution.xy;
-  vec2 p = (2.0*fragCoord.xy-iResolution.xy)/iResolution.y;
+  float2 q = fragCoord.xy / iResolution.xy;
+  float2 p = (2.0*fragCoord.xy-iResolution.xy)/iResolution.y;
 
   float minD = min(iResolution.x, iResolution.y);
   // cameraDistance = 7.-m.y*6.9;
   lineWidth = (0.0013*SCALE*(600./minD));
 
-  vec3 ro = n(vec3(camPan,camAlt,camDepth));
-  vec3 target = vec3(0,0,-wallPlane.w);
+  float3 ro = n(float3(camPan,camAlt,camDepth));
+  float3 target = float3(0,0,-wallPlane.w);
   ff = n(target - ro);
   pm = projMatrix(ff);
   ro -= pm[2]*cameraDistance;
   float le = 1.5;
 
-  vec2 uv = 2.*(fragCoord-iResolution*0.5) / minD * SCALE;
-  vec3 rd, col=v3;
+  float2 uv = 2.*(fragCoord-iResolution*0.5) / minD * SCALE;
+  float3 rd, col=v3;
 
   lightPos = ro;
 
@@ -745,44 +753,44 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
   float focalDistance = 2.0;
   float spread = 0.015;
   target = ro + pm[2] * focalDistance;
-  vec3 rol = ro + pm[0] * spread;
-  vec3 ror = ro + pm[0] * -spread;
+  float3 rol = ro + pm[0] * spread;
+  float3 ror = ro + pm[0] * -spread;
 
   ff = n(target - rol);
   pm = projMatrix(ff);
-  rd = normalize( vec3(uv,le) * pm );
-  col += getRayColor( rol, rd ) * vec3(1,0,0);
+  rd = normalize( float3(uv,le) * pm );
+  col += getRayColor( rol, rd ) * float3(1,0,0);
   ff = n(target - ror);
   pm = projMatrix(ff);
-  rd = normalize( vec3(uv,le) * pm );
-  col += getRayColor( ror, rd ) * vec3(0,1.,1);
+  rd = normalize( float3(uv,le) * pm );
+  col += getRayColor( ror, rd ) * float3(0,1.,1);
   col *= 0.5;
   #else
-  vec2 os = vec2(0.5,0.);
+  float2 os = float2(0.5,0.);
   uv = 2.*(fragCoord-iResolution*0.5) / minD * SCALE;
-  rd = normalize( vec3(uv,le) * pm );
+  rd = normalize( float3(uv,le) * pm );
   col += getRayColor( ro, rd );
   uv = 2.*(fragCoord+os.xy-iResolution*0.5) / minD * SCALE;
-  rd = normalize( vec3(uv,le) * pm );
+  rd = normalize( float3(uv,le) * pm );
   col += getRayColor( ro, rd );
   uv = 2.*(fragCoord+os.yx-iResolution*0.5) / minD * SCALE;
-  rd = normalize( vec3(uv,le) * pm );
+  rd = normalize( float3(uv,le) * pm );
   col += getRayColor( ro, rd );
   uv = 2.*(fragCoord+os.xx-iResolution*0.5) / minD * SCALE;
-  rd = normalize( vec3(uv,le) * pm );
+  rd = normalize( float3(uv,le) * pm );
   col += getRayColor( ro, rd );
   col *= 0.25;
   #endif
 
   // gama
-  // col = pow( col, vec3(0.44,0.44,0.44) );
-  col = pow( col, vec3(0.9) );
+  // col = pow( col, float3(0.44,0.44,0.44) );
+  col = pow( col, float3(0.9) );
 
   // col += 0.2; // brightness
   col = mix( col, smoothstep( 0.0, 1.0, col ), 0.5 ); // contrast
 
   // saturate
-  col = mix( col, vec3(dot(col,vec3(0.333))), -0.2 );
+  col = mix( col, float3(dot(col,float3(0.333))), -0.2 );
 
   // vigneting
   col *= 0.2 + 0.8*pow(16.0*q.x*q.y*(1.0-q.x)*(1.0-q.y),0.2);
@@ -790,7 +798,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
   // dithering
   col += (1.0/255.0)*hash3(q.x+13.3214*q.y);
 
-  // col = vec3(length(col)); // grayscale
+  // col = float3(length(col)); // grayscale
   // col = smoothstep(0.,1.,col);
   fragColor = vec4(col,1);
 }
@@ -800,4 +808,18 @@ out vec4 FragColor;
 void main() {
   mainImage(FragColor, gl_FragCoord.xy);
   // if( gl_FragCoord.y < 10. ) { gl_FragColor=vec4(pal(gl_FragCoord.x/u_resolution.x),1.); }
+}
+
+fragment float4 fragmentShader0(VertexOut vout [[stage_in]],
+                               constant float2& u_resolution [[buffer(0)]],
+                               constant uint& u_frame [[buffer(1)]],
+                               constant float& u_time [[buffer(2)]],
+                               constant uint& u_pass [[buffer(3)]],
+                               texture2d<float> buffer0 [[texture(0)]],
+                               texture2d<float> buffer1 [[texture(1)]],
+                               texture2d<float> buffer2 [[texture(2)]],
+                               texture2d<float> buffer3 [[texture(3)]]
+                               ) {
+
+    return float4(1,1,0,1));
 }
