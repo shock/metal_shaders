@@ -1,9 +1,10 @@
 #include <metal_stdlib>
 using namespace metal;
 
-struct MyShaderData {
-    float4 o_pan;  // @uniform
-    float4 o_multixy;  // @uniform
+struct MyShaderData { // @uniform
+    float o_long;
+    float2 o_pan;
+    float2 o_multixy;
 };
 
 #include "./lib/random.metal"
@@ -83,7 +84,7 @@ fragment float4 fragmentShader0(float4 frag_coord [[position]],
   if( abs(rand_coord.x - frag_coord.x) < 1 && abs(rand_coord.y - frag_coord.y) < 1 ){
     return pixelColor + .01;
   }
-  return float4(uniforms.o_multixy.x, uniforms.o_multixy.y, uniforms.o_pan.x, 1);
+  return float4(uniforms.o_multixy.x, uniforms.o_multixy.y, uniforms.o_pan.x, uniforms.o_long)*uniforms.o_long;
   return pixelColor;
 }
 
