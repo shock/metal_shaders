@@ -4,7 +4,13 @@ using namespace metal;
 struct MyShaderData { // @uniform
     float o_long;
     float2 o_pan;
+    float3 o_col1;
+    float o_col1r;
+    float o_col1g;
+    float o_col1b;
     float2 o_multixy;
+    float3 o_f3;
+    float4 f_f3;
 };
 
 #include "./lib/random.metal"
@@ -35,12 +41,15 @@ float4 ripple(float2 pos, float2 size, float time) {
     return float4(v, v2, v3, 1.);
 }
 
+// #define o_col1 (float3(__u.o_col1r,__u.o_col1g,__u.o_col1b))
+#define o_col1 (__u.o_col1)
+
 fragment float4 fragmentShader0(float4 frag_coord [[position]],
                                constant float2& u_resolution [[buffer(0)]],
                                constant uint& u_frame [[buffer(1)]],
                                constant float& u_time [[buffer(2)]],
                                constant uint& u_pass [[buffer(3)]],
-                               constant MyShaderData& uniforms [[buffer(4)]],
+                               constant MyShaderData& __u [[buffer(4)]],
                                texture2d<float> buffer0 [[texture(0)]],
                                texture2d<float> buffer1 [[texture(1)]],
                                texture2d<float> buffer2 [[texture(2)]],
@@ -84,7 +93,7 @@ fragment float4 fragmentShader0(float4 frag_coord [[position]],
   if( abs(rand_coord.x - frag_coord.x) < 1 && abs(rand_coord.y - frag_coord.y) < 1 ){
     return pixelColor + .01;
   }
-  return float4(uniforms.o_multixy.x, uniforms.o_multixy.y, uniforms.o_pan.x, uniforms.o_long)*uniforms.o_long;
+  return float4(o_col1, 1)*__u.o_long;
   return pixelColor;
 }
 
