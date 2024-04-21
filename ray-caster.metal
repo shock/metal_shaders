@@ -47,6 +47,20 @@ using namespace metal;
 #define FLOOR 1
 #define SPHERE 2
 
+struct Light {
+    float4 pos; // .w = type : 0-point,1-directional
+    float3 color;
+    float3 intensity;
+};
+
+constant int MAX_LIGHTS = 1;
+
+void initLights(thread Light *lights, constant Glsl3Uniforms &_u ) {
+    lights[0].pos = float4(0,0,10 + 1000*o_fad1,0);
+    lights[0].color = o_col3;
+    lights[0].intensity = 10*o_long;
+}
+
 struct RayData {
     float3 ro;
     float3 rd;
@@ -57,8 +71,27 @@ struct RayData {
     int flags;
 };
 
-constant float4 plane = float4(0,1,0,-10);
-constant float4 sphere = float4(0,3,0,20);
+struct Context {
+    Glsl3Uniforms _u;
+    thread Light *lights;
+    RayData rdat;
+};
+
+float getCheckerboardColor(float x, float y, float size) {
+    // Determine which square of the checkerboard the point falls into
+    int ix = int(round((x+(size/2)) / size));
+    int iy = int(round((y+(size/2)) / size));
+
+    // Calculate the checkerboard pattern
+    if ((ix + iy) % 2 == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+constant float4 plane = float4(0,0,1,-10);
+constant float4 sphere = float4(0,3,0,70);
 
 RayData newRayData(float3 ro, float3 rd) {
     RayData rdat = RayData();
@@ -72,6 +105,23 @@ RayData newRayData(float3 ro, float3 rd) {
     return rdat;
 }
 
+float3 calcLight( thread Light *lights, thread RayData &rdat,constant Glsl3Uniforms &_u )
+{
+    Light pointLight = lights[0];
+    // Calculate light properties
+    float3 toLight = pointLight.pos.xyz - rdat.pos;
+    float distance = length(toLight);
+    float attenuation = 1;
+    float3 lightDir = normalize(toLight);
+
+    // Calculate diffuse lighting
+    float diff = max(dot(rdat.nor, lightDir), 0.0);
+    float3 diffuse = diff * pointLight.color * pointLight.intensity * attenuation;
+
+    // Output final color
+    return diffuse;
+}
+
 // float intersectRay( float3 ro, float3 rd, float px, float td, int mask, out float3 pos, out float3 nor, out int matid  ) {
 float intersectRay( float3 ro, float3 rd, float px, thread RayData &rdat  ) {
     rdat.matid = BACKDROP;
@@ -79,7 +129,11 @@ float intersectRay( float3 ro, float3 rd, float px, thread RayData &rdat  ) {
 
     d = planeIntersect(ro, rd, plane);
     if( d > 0. && d < rdat.md ) {
-        rdat.pos = ro + rd * d; rdat.nor = plane.xyz; rdat.matid = FLOOR; rdat.md = d;
+        float3 pos = ro + rd * d;
+        float cb = getCheckerboardColor(pos.x, pos.y, 25);
+        if( cb == 1 ) {
+            rdat.pos = ro + rd * d; rdat.nor = plane.xyz; rdat.matid = FLOOR; rdat.md = d;
+        }
     }
 
     d = sphereIntersection( ro, rd, sphere );
@@ -91,35 +145,24 @@ float intersectRay( float3 ro, float3 rd, float px, thread RayData &rdat  ) {
     return rdat.md;
 }
 
-float3 getCheckerboardColor(float x, float y, int size) {
-    // Determine which square of the checkerboard the point falls into
-    int ix = int(x) / size;
-    int iy = int(y) / size;
-
-    // Calculate the checkerboard pattern
-    if ((ix + iy) % 2 == 0) {
-        return float3(1.0, 1.0, 1.0); // White
-    } else {
-        return float3(0.0, 0.0, 0.0); // Black
-    }
-}
-
 float3 getRayColor( float3 ro, float3 rd, float px, constant Glsl3Uniforms &_u ) {
+    Light lights[MAX_LIGHTS];
+    initLights(lights, _u);
+    float3 color = rd;
+
     RayData rdat = newRayData(ro, rd);
     intersectRay( ro, rd, px, rdat );
     if( rdat.flags > 0 ) return float3(1,0,1);
     if( rdat.matid == BACKDROP ) {
-        return float3(0.1);
+        return o_col4;
     }
     if( rdat.matid == FLOOR ) {
-        float3 cb = getCheckerboardColor(rdat.pos.x,rdat.pos.z,100);
-        return float3(0.9,0.6,0.4) * cb;
+        color = o_col2;
     }
     if( rdat.matid == SPHERE ) {
-        return float3(0.7,0.6,1);
+        color = o_col1;
     }
-    float3 color = float3(rd);
-    return color;
+    return color * calcLight( lights, rdat, _u );
 }
 
 #ifndef LOOK_AT
@@ -129,7 +172,6 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant Glsl3Uniforms &_u )
 #ifndef CAM_ZOOM
 #define CAM_ZOOM (0.1+ROT1*3.9)
 #endif
-
 
 float3 getPixelColor( float2 fragCoord, float2 u_resolution, constant Glsl3Uniforms &_u ) {
     float scale = SCALE, le = CAM_ZOOM;
@@ -154,6 +196,20 @@ float3 getPixelColor( float2 fragCoord, float2 u_resolution, constant Glsl3Unifo
     return color;
 }
 
+// ACES Filmic tone-mapping approximated - Krzysztof Narkowicz
+float3 ACESFilmicApprox(float3 x) { float a = 2.51, b = 0.03, c = 2.43, d = 0.59, e = 0.14;
+    return clamp((x*(a*x+b))/(x*(c*x+d)+e),0.,1.); }
+
+float3 toneMap( float3 color ) {
+  // map from HDR to Linear
+  color = ACESFilmicApprox(color); // ACES Filmic HDR Tone mapping
+  // gamma - map from Linear to sRGB
+  color = pow( color, float3(0.4545) );
+
+  return color;
+}
+
+
 fragment float4 fragmentShader0(float4 frag_coord [[position]],
                                constant float2& u_resolution [[buffer(0)]],
                                constant uint& u_frame [[buffer(1)]],
@@ -167,5 +223,6 @@ fragment float4 fragmentShader0(float4 frag_coord [[position]],
                                )
 {
     float3 color = getPixelColor(frag_coord.xy, u_resolution, _u);
-    return float4(color, 1) * o_long;
+    color = toneMap(color);
+    return float4(color, 1);
 }

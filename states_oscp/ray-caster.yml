@@ -139,11 +139,48 @@ patch: !ruby/hash:HashObj
       :default_to: 0
   :defaults: 
 client_state:
+- :address: "/o_aim_x"
+  :vals:
+  - -0.042986512184143066
 - :address: "/o_aim_y"
   :vals:
-  - -0.5331752300262451
+  - -0.4526064395904541
+- :address: "/o_col1b"
+  :vals:
+  - 0.6789100170135498
+- :address: "/o_col1g"
+  :vals:
+  - 0.6421801447868347
+- :address: "/o_col1r"
+  :vals:
+  - 0.9502370357513428
+- :address: "/o_col2b"
+  :vals:
+  - 0.8767772912979126
+- :address: "/o_col2g"
+  :vals:
+  - 0.22037918865680695
+- :address: "/o_col2r"
+  :vals:
+  - 0.5438389182090759
+- :address: "/o_col3g"
+  :vals:
+  - 0.0
 - :address: "/o_distance"
   :vals:
-  - 0.803317666053772
+  - -0.6113742589950562
+- :address: "/o_pan"
+  :vals:
+  - 1.0
+  - 0.07121658325195312
+- :address: "/o_rot1"
+  :vals:
+  - 1.0
+- :address: "/o_rot2"
+  :vals:
+  - 0.5994517207145691
+- :address: "/o_scale"
+  :vals:
+  - 6.779675006866455
 client_ip: 192.168.1.42
 client_port: 9000
