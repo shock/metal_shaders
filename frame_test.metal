@@ -1,5 +1,6 @@
 #include <metal_stdlib>
 using namespace metal;
+#include "include/metaltoy.metal" // mandatory
 
 struct MyShaderData { // @uniform
     float o_long;
@@ -45,86 +46,16 @@ float4 ripple(float2 pos, float2 size, float time) {
 #define o_col1 (__u.o_col1)
 
 fragment float4 fragmentShader0(float4 frag_coord [[position]],
-                               constant float2& u_resolution [[buffer(0)]],
-                               constant uint& u_frame [[buffer(1)]],
-                               constant float& u_time [[buffer(2)]],
-                               constant uint& u_pass [[buffer(3)]],
-                               constant MyShaderData& __u [[buffer(4)]],
-                               texture2d<float> buffer0 [[texture(0)]],
-                               texture2d<float> buffer1 [[texture(1)]],
-                               texture2d<float> buffer2 [[texture(2)]],
-                               texture2d<float> buffer3 [[texture(3)]]
+                                constant SysUniforms& sys_u [[buffer(0)]],
+                                // constant Glsl3Uniforms& _u [[buffer(1)]],
+                                texture2d<float> buffer0 [[texture(0)]],
+                                texture2d<float> buffer1 [[texture(1)]],
+                                texture2d<float> buffer2 [[texture(2)]],
+                                texture2d<float> buffer3 [[texture(3)]]
                                )
 {
-  // float frameTime = float(u_frame)/60.0;
-  // if( frag_coord.x < u_resolution.x / 4) {
-  //   return float4(fract(frameTime));
-  // }
-  // if( frag_coord.x < u_resolution.x / 2) {
-  //   return float4(fract(u_time));
-  // }
-  // float4 color = ripple(frag_coord.xy, u_resolution, frameTime);
-  // return pow(color,2);
-  // int col = u_frame % uint(u_resolution.x);
-  // int row = u_frame / uint(u_resolution.x);
-  // if( int(frag_coord.x) == col ) {
-  //   return float4(1);
-  // }
-  float4 pixelColor = buffer0.sample(sampler(mag_filter::linear, min_filter::linear), frag_coord.xy/u_resolution);
-  // if(float(u_frame)/100000 != pixelColor.x) {
-  //   // return float4(1,0,1,1);
-  // }
-  float maxr = max(u_resolution.x, u_resolution.y)/1.5;
-  // float maxr = u_resolution.y;
-  float2 rand_coord;
-  float angle = float(u_frame)/10000*2*3.14159;
-  float rand = random1Df(u_time);
-  // rand=sqrt(rand);
-  // float rand = sin(u_time)/2+0.5;
-  // float rand2 = random1Df(u_time*frag_coord.y);
-  // return float4(rand);
-  rand_coord.x = floor(cos(angle)*maxr*rand);
-  rand_coord.y = floor(sin(angle)*maxr*rand);
-  // rand_coord.x = rand;
-  // rand_coord.y = rand2;
-  // return float4(rand,rand2,1,1);
-  // rand_coord.xy *= u_resolution;
-  rand_coord += u_resolution.xy/2;
-  if( abs(rand_coord.x - frag_coord.x) < 1 && abs(rand_coord.y - frag_coord.y) < 1 ){
-    return pixelColor + .01;
-  }
-  return float4(o_col1, 1)*__u.o_long;
-  return pixelColor;
+    if( frag_coord.x < (sys_u.resolution.x / 2) ) {
+        return float4(float3(fract(sys_u.time)),1);
+    }
+    return float4(float3(fract(float(sys_u.frame)/60)),1);
 }
-
-// fragment float4 fragmentShader1(float4 frag_coord [[position]],
-//                                constant float2& u_resolution [[buffer(0)]],
-//                                constant uint& u_frame [[buffer(1)]],
-//                                constant float& u_time [[buffer(2)]],
-//                                constant uint& u_pass [[buffer(3)]],
-//                                texture2d<float> buffer0 [[texture(0)]],
-//                                texture2d<float> buffer1 [[texture(1)]],
-//                                texture2d<float> buffer2 [[texture(2)]],
-//                                texture2d<float> buffer3 [[texture(3)]]
-//                                )
-// {
-//   // float frameTime = float(u_frame)/60.0;
-//   // if( frag_coord.x < u_resolution.x / 4) {
-//   //   return float4(fract(frameTime));
-//   // }
-//   // if( frag_coord.x < u_resolution.x / 2) {
-//   //   return float4(fract(u_time));
-//   // }
-//   // float4 color = ripple(frag_coord.xy, u_resolution, frameTime);
-//   // return pow(color,2);
-//   // int col = u_frame % uint(u_resolution.x);
-//   // int row = u_frame / uint(u_resolution.x);
-//   // if( int(frag_coord.x) == col ) {
-//   //   return float4(1);
-//   // }
-//   float4 pixelColor = buffer1.sample(sampler(mag_filter::linear, min_filter::linear), frag_coord.xy/u_resolution);
-//   // if(float(u_frame)/100000 != pixelColor.x) {
-//   //   // return float4(1,0,1,1);
-//   // }
-//   return pixelColor + 0.01;
-// }

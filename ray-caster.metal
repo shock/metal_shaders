@@ -1,5 +1,7 @@
 #include <metal_stdlib>
 using namespace metal;
+#include "include/metaltoy.metal" // mandatory
+
 #include "lib/camera.metal"
 #include "lib/procedural_textures.metal"
 #include "lib/osc/glsl3_proxy.metal"
@@ -133,7 +135,8 @@ float3 calcLight( thread Light *lights, thread RayData &rdat,constant Glsl3Unifo
 }
 
 // float intersectRay( float3 ro, float3 rd, float px, float td, int mask, out float3 pos, out float3 nor, out int matid  ) {
-float intersectRay( float3 ro, float3 rd, float px, thread RayData &rdat  ) {
+float intersectRay( float3 ro, float3 rd, float px, thread RayData &rdat  )
+{
     rdat.matid = BACKDROP;
     float d;
 
@@ -224,20 +227,16 @@ float3 toneMap( float3 color ) {
   return color;
 }
 
-
 fragment float4 fragmentShader0(float4 frag_coord [[position]],
-                               constant float2& u_resolution [[buffer(0)]],
-                               constant uint& u_frame [[buffer(1)]],
-                               constant float& u_time [[buffer(2)]],
-                               constant uint& u_pass [[buffer(3)]],
-                               constant Glsl3Uniforms& _u [[buffer(4)]],
-                               texture2d<float> buffer0 [[texture(0)]],
-                               texture2d<float> buffer1 [[texture(1)]],
-                               texture2d<float> buffer2 [[texture(2)]],
-                               texture2d<float> buffer3 [[texture(3)]]
+                                constant SysUniforms& sys_u [[buffer(0)]],
+                                constant Glsl3Uniforms& _u [[buffer(1)]],
+                                texture2d<float> buffer0 [[texture(0)]],
+                                texture2d<float> buffer1 [[texture(1)]],
+                                texture2d<float> buffer2 [[texture(2)]],
+                                texture2d<float> buffer3 [[texture(3)]]
                                )
 {
-    float3 color = getPixelColor(frag_coord.xy, u_resolution, _u);
+    float3 color = getPixelColor(frag_coord.xy, sys_u.resolution, _u);
     color = toneMap(color);
     return float4(color, 1);
 }
