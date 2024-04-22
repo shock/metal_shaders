@@ -1,9 +1,12 @@
 #include <metal_stdlib>
 using namespace metal;
 #include "lib/camera.metal"
+#include "lib/procedural_textures.metal"
 #include "lib/osc/glsl3_proxy.metal"
 #include "lib/interceptors/plane.metal"
 #include "lib/interceptors/sphere.metal"
+#include "lib/sky_dome.metal"
+#include "lib/common.metal"
 
 #define GAM float3(o_gam_r,o_gam_g,o_gam_b)
 #define AIM (o_aim + float2(-0.,0))
@@ -56,7 +59,7 @@ struct Light {
 constant int MAX_LIGHTS = 1;
 
 void initLights(thread Light *lights, constant Glsl3Uniforms &_u ) {
-    lights[0].pos = float4(0,0,10 + 1000*o_fad1,0);
+    lights[0].pos = float4(0,10 + 1000*o_fad1,0,0);
     lights[0].color = o_col3;
     lights[0].intensity = 10*o_long;
 }
@@ -90,7 +93,7 @@ float getCheckerboardColor(float x, float y, float size) {
     }
 }
 
-constant float4 plane = float4(0,0,1,-10);
+constant float4 plane = float4(0,1,0,-10);
 constant float4 sphere = float4(0,3,0,70);
 
 RayData newRayData(float3 ro, float3 rd) {
@@ -105,13 +108,12 @@ RayData newRayData(float3 ro, float3 rd) {
     return rdat;
 }
 
-float3 calcLight( thread Light *lights, thread RayData &rdat,constant Glsl3Uniforms &_u )
+float3 calcPointLight( thread Light pointLight, thread RayData &rdat, constant Glsl3Uniforms &_u )
 {
-    Light pointLight = lights[0];
     // Calculate light properties
     float3 toLight = pointLight.pos.xyz - rdat.pos;
     float distance = length(toLight);
-    float attenuation = 1;
+    float attenuation = 1/(distance*distance);
     float3 lightDir = normalize(toLight);
 
     // Calculate diffuse lighting
@@ -119,7 +121,15 @@ float3 calcLight( thread Light *lights, thread RayData &rdat,constant Glsl3Unifo
     float3 diffuse = diff * pointLight.color * pointLight.intensity * attenuation;
 
     // Output final color
-    return diffuse;
+    return diffuse*100000;
+}
+
+float3 calcLight( thread Light *lights, thread RayData &rdat,constant Glsl3Uniforms &_u )
+{
+    Light pointLight = lights[0];
+    float3 light = float3(0);
+    light += calcPointLight(pointLight, rdat, _u);
+    return light;
 }
 
 // float intersectRay( float3 ro, float3 rd, float px, float td, int mask, out float3 pos, out float3 nor, out int matid  ) {
@@ -128,11 +138,12 @@ float intersectRay( float3 ro, float3 rd, float px, thread RayData &rdat  ) {
     float d;
 
     d = planeIntersect(ro, rd, plane);
-    if( d > 0. && d < rdat.md ) {
+    if( d > 0. && d < rdat.md && false) {
         float3 pos = ro + rd * d;
-        float cb = getCheckerboardColor(pos.x, pos.y, 25);
+        float cb = getCheckerboardColor(pos.x, pos.z, 40);
         if( cb == 1 ) {
-            rdat.pos = ro + rd * d; rdat.nor = plane.xyz; rdat.matid = FLOOR; rdat.md = d;
+            float s = sign(-dot(rd, plane.xyz));
+            rdat.pos = ro + rd * d; rdat.nor = plane.xyz*s; rdat.matid = FLOOR; rdat.md = d;
         }
     }
 
@@ -154,10 +165,13 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant Glsl3Uniforms &_u )
     intersectRay( ro, rd, px, rdat );
     if( rdat.flags > 0 ) return float3(1,0,1);
     if( rdat.matid == BACKDROP ) {
-        return o_col4;
+        float clouds = 0.7;
+        float daylight = 0.5;
+        return skyDome(rd, clouds, daylight, vmin(o_resolution));
     }
     if( rdat.matid == FLOOR ) {
-        color = o_col2;
+        float c = chex(rdat.pos.xz/10);
+        color = o_col2 * (c/2+0.5);
     }
     if( rdat.matid == SPHERE ) {
         color = o_col1;
@@ -177,6 +191,7 @@ float3 getPixelColor( float2 fragCoord, float2 u_resolution, constant Glsl3Unifo
     float scale = SCALE, le = CAM_ZOOM;
     float minD = min(u_resolution.x, u_resolution.y);
     float2 ndc = 2.*(fragCoord-u_resolution*0.5) / u_resolution.x;
+    ndc *= float2(1,-1);  // invert y-coord like OpenGL
     // float2 st = fragCoord/u_resolution;
     float ya = AIM.x * AIM_SC * k2PI;
     float xa = AIM.y * AIM_SC * k2PI;

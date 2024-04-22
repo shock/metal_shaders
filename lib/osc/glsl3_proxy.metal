@@ -78,6 +78,7 @@ struct Glsl3Uniforms { // @uniform
     float o_tog4;
     float o_tog5;
 
+    float2 u_resolution;
 };
 
 #define o_red (_u.o_red)
@@ -166,5 +167,7 @@ struct Glsl3Uniforms { // @uniform
 #define COL4 (o_col4)
 #define COL5 (o_col5)
 #define COL6 (o_col6)
+
+#define o_resolution (_u.u_resolution)
 
 #endif

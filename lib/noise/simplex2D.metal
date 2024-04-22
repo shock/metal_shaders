@@ -1,3 +1,6 @@
+#ifndef MT_SIMPLEX2D
+#define MT_SIMPLEX2D
+
 //
 // Description : Array and textureless GLSL 2D simplex noise function.
 //      Author : Ian McEwan, Ashima Arts.
@@ -69,3 +72,5 @@ float snoise(float2 v)
   g.yz = a0.yz * x12.xz + h.yz * x12.yw;
   return 130.0 * dot(m, g);
 }
+
+#endif
