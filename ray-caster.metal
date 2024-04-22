@@ -168,9 +168,10 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant Glsl3Uniforms &_u )
     intersectRay( ro, rd, px, rdat );
     if( rdat.flags > 0 ) return float3(1,0,1);
     if( rdat.matid == BACKDROP ) {
-        float clouds = 0.7;
-        float daylight = 0.5;
-        return skyDome(rd, clouds, daylight, vmin(o_resolution));
+        float stars = 0.15;
+        float clouds = 0.2;
+        float daylight = 0.2;
+        return skyDome(rd, stars, clouds, daylight, vmin(o_resolution));
     }
     if( rdat.matid == FLOOR ) {
         float c = chex(rdat.pos.xz/10);

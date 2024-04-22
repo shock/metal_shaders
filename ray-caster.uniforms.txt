@@ -66,4 +66,4 @@ o_tog2, 0.0
 o_tog3, 0.0
 o_tog4, 0.0
 o_tog5, 0.0
-u_resolution, 608.0, 626.0
+u_resolution, 501.0, 480.0

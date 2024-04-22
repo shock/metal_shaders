@@ -12,6 +12,7 @@ struct MyShaderData { // @uniform
     float2 o_multixy;
     float3 o_f3;
     float4 f_f3;
+    float2 u_resolution;
 };
 
 #include "./lib/random.metal"
