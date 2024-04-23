@@ -49,13 +49,13 @@
                         "control" : {
                           "info" : {
                             "address" : null,
-                            "id" : "6D2B470F-E377-4162-A8DB-42D72C50CC07",
-                            "name" : "o_distance"
+                            "id" : "F3D1B97F-C858-4A22-9B6D-9642051A58B3",
+                            "name" : "o_scale"
                           },
-                          "maximum" : 1,
+                          "maximum" : 10,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0
+                          "value" : 6.78
                         }
                       }
                     }
@@ -66,13 +66,13 @@
                         "control" : {
                           "info" : {
                             "address" : null,
-                            "id" : "F3D1B97F-C858-4A22-9B6D-9642051A58B3",
-                            "name" : "o_scale"
+                            "id" : "6D2B470F-E377-4162-A8DB-42D72C50CC07",
+                            "name" : "o_distance"
                           },
-                          "maximum" : 10,
+                          "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 10
+                          "value" : 0.282
                         }
                       }
                     }
@@ -99,13 +99,30 @@
                         "control" : {
                           "info" : {
                             "address" : null,
+                            "id" : "7AFC70E8-B91D-41A5-80BE-353DD40E5534",
+                            "name" : "o_aim_sc"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.492
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
                             "id" : "B1C494B8-FA98-4D4F-83E7-A7628917B091",
                             "name" : "o_aim_x"
                           },
                           "maximum" : 1,
                           "minimum" : -1,
                           "type" : "slider",
-                          "value" : 0.173
+                          "value" : 0.144
                         }
                       }
                     }
@@ -122,24 +139,7 @@
                           "maximum" : 1,
                           "minimum" : -1,
                           "type" : "slider",
-                          "value" : 0.127
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "control" : {
-                      "container" : {
-                        "control" : {
-                          "info" : {
-                            "address" : null,
-                            "id" : "7AFC70E8-B91D-41A5-80BE-353DD40E5534",
-                            "name" : "o_aim_sc"
-                          },
-                          "maximum" : 1,
-                          "minimum" : 0,
-                          "type" : "slider",
-                          "value" : 0.524
+                          "value" : 0.025
                         }
                       }
                     }
@@ -154,12 +154,12 @@
                     "info" : {
                       "address" : null,
                       "id" : "45AA42A1-B18D-4ACA-9AD2-3021B30C7617",
-                      "name" : "Slider"
+                      "name" : "o_rot1"
                     },
                     "maximum" : 1,
                     "minimum" : 0,
                     "type" : "slider",
-                    "value" : 0
+                    "value" : 0.286
                   }
                 }
               }
@@ -214,7 +214,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.281
+                          "value" : 0.389
                         }
                       }
                     }
@@ -231,7 +231,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.794
+                          "value" : 0.712
                         }
                       }
                     }
@@ -248,7 +248,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 1
+                          "value" : 0.597
                         }
                       }
                     }
