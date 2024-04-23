@@ -1,0 +1,599 @@
+{
+  "address" : null,
+  "panels" : [
+    [
+      {
+        "activeTabID" : "675E2AB6-CA97-449E-A156-040583EF3850",
+        "id" : "3B09DC03-3A38-4776-B478-74CBD92EDA80"
+      }
+    ]
+  ],
+  "tabs" : [
+    {
+      "address" : {
+        "bypass" : {
+
+        }
+      },
+      "id" : "6E195DD1-BAB7-4E1D-A2F6-EAD19E420972",
+      "name" : "Camera",
+      "rootItem" : {
+        "group" : {
+          "info" : {
+            "address" : {
+              "bypass" : {
+
+              }
+            },
+            "id" : "3C579A9C-C95A-4E42-B7C8-20E352623B6F",
+            "isOpen" : true,
+            "name" : "Root"
+          },
+          "items" : [
+            {
+              "group" : {
+                "info" : {
+                  "address" : {
+                    "bypass" : {
+
+                    }
+                  },
+                  "id" : "FB7F1968-74B3-4176-B719-8A5EFE54A55B",
+                  "isOpen" : true,
+                  "name" : "Distance"
+                },
+                "items" : [
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "6D2B470F-E377-4162-A8DB-42D72C50CC07",
+                            "name" : "o_distance"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "F3D1B97F-C858-4A22-9B6D-9642051A58B3",
+                            "name" : "o_scale"
+                          },
+                          "maximum" : 10,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 10
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "group" : {
+                "info" : {
+                  "address" : {
+                    "bypass" : {
+
+                    }
+                  },
+                  "id" : "78C9B6B2-3DA3-43CF-AC09-50B9351D36E6",
+                  "isOpen" : true,
+                  "name" : "Aim"
+                },
+                "items" : [
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "B1C494B8-FA98-4D4F-83E7-A7628917B091",
+                            "name" : "o_aim_x"
+                          },
+                          "maximum" : 1,
+                          "minimum" : -1,
+                          "type" : "slider",
+                          "value" : 0.173
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "3CCBE7ED-73EE-4554-B5F9-3931DBE39298",
+                            "name" : "o_aim_y"
+                          },
+                          "maximum" : 1,
+                          "minimum" : -1,
+                          "type" : "slider",
+                          "value" : 0.127
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "7AFC70E8-B91D-41A5-80BE-353DD40E5534",
+                            "name" : "o_aim_sc"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.524
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "control" : {
+                "container" : {
+                  "control" : {
+                    "info" : {
+                      "address" : null,
+                      "id" : "45AA42A1-B18D-4ACA-9AD2-3021B30C7617",
+                      "name" : "Slider"
+                    },
+                    "maximum" : 1,
+                    "minimum" : 0,
+                    "type" : "slider",
+                    "value" : 0
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "address" : {
+        "bypass" : {
+
+        }
+      },
+      "id" : "675E2AB6-CA97-449E-A156-040583EF3850",
+      "name" : "Colors",
+      "rootItem" : {
+        "group" : {
+          "info" : {
+            "address" : {
+              "bypass" : {
+
+              }
+            },
+            "id" : "0160A7BE-AAF8-4193-A71E-DF14F28492BF",
+            "isOpen" : true,
+            "name" : "Root"
+          },
+          "items" : [
+            {
+              "group" : {
+                "info" : {
+                  "address" : {
+                    "bypass" : {
+
+                    }
+                  },
+                  "id" : "8E3FC104-6438-4866-AB21-F7A672CCB579",
+                  "isOpen" : true,
+                  "name" : "o_col1"
+                },
+                "items" : [
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "C1AC9B43-FE2E-4D35-989B-D0A122F221BF",
+                            "name" : "o_col1r"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.281
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "F419B1E4-DBD6-4E67-89D3-851F755B9DC9",
+                            "name" : "o_col1g"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.794
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "367BFDE0-A506-42D2-8B5B-0B095525BFF4",
+                            "name" : "o_col1b"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 1
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "group" : {
+                "info" : {
+                  "address" : {
+                    "bypass" : {
+
+                    }
+                  },
+                  "id" : "884FC104-6438-4866-AB21-F7A672CCB579",
+                  "isOpen" : true,
+                  "name" : "o_col2"
+                },
+                "items" : [
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "C2AC9B43-FE2E-4D35-989B-D0A122F221BF",
+                            "name" : "o_col2r"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.433
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "1419B1E4-DBD6-4E67-89D3-851F755B9DC9",
+                            "name" : "o_col2g"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.694
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "327BFDE0-A506-42D2-8B5B-0B095525BFF4",
+                            "name" : "o_col2b"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.898
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "group" : {
+                "info" : {
+                  "address" : {
+                    "bypass" : {
+
+                    }
+                  },
+                  "id" : "CAB3F104-6438-4866-AB21-F7A672CCB579",
+                  "isOpen" : true,
+                  "name" : "o_col3"
+                },
+                "items" : [
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "CAB3FB43-FE2E-4D35-989B-D0A122F221BF",
+                            "name" : "o_col3r"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.539
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "CAB3F1E4-DBD6-4E67-89D3-851F755B9DC9",
+                            "name" : "o_col3g"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.682
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "CAB3FDE0-A506-42D2-8B5B-0B095525BFF4",
+                            "name" : "o_col3b"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.766
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "group" : {
+                "info" : {
+                  "address" : {
+                    "bypass" : {
+
+                    }
+                  },
+                  "id" : "0C4FC104-6438-4866-AB21-F7A672CCB579",
+                  "isOpen" : true,
+                  "name" : "o_col4"
+                },
+                "items" : [
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "0C4C9B43-FE2E-4D35-989B-D0A122F221BF",
+                            "name" : "o_col4r"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.569
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "0C49B1E4-DBD6-4E67-89D3-851F755B9DC9",
+                            "name" : "o_col4g"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.722
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "0C4BFDE0-A506-42D2-8B5B-0B095525BFF4",
+                            "name" : "o_col4b"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.811
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "group" : {
+                "info" : {
+                  "address" : {
+                    "bypass" : {
+
+                    }
+                  },
+                  "id" : "0C5FC104-6438-4866-AB21-F7A672CCB579",
+                  "isOpen" : true,
+                  "name" : "o_col5"
+                },
+                "items" : [
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "0C5C9B43-FE2E-4D35-989B-D0A122F221BF",
+                            "name" : "o_col5r"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.642
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "0C59B1E4-DBD6-4E67-89D3-851F755B9DC9",
+                            "name" : "o_col5g"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.824
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "0C5BFDE0-A506-42D2-8B5B-0B095525BFF4",
+                            "name" : "o_col5b"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.944
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "group" : {
+                "info" : {
+                  "address" : {
+                    "bypass" : {
+
+                    }
+                  },
+                  "id" : "0C6FC104-6438-4866-AB21-F7A672CCB579",
+                  "isOpen" : true,
+                  "name" : "o_col6"
+                },
+                "items" : [
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "0C6C9B43-FE2E-4D35-989B-D0A122F221BF",
+                            "name" : "o_col6r"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.665
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "0C69B1E4-DBD6-4E67-89D3-851F755B9DC9",
+                            "name" : "o_col6g"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.803
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "0C6BFDE0-A506-42D2-8B5B-0B095525BFF4",
+                            "name" : "o_col6b"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.889
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
