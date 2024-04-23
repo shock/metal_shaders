@@ -3,7 +3,7 @@
   "panels" : [
     [
       {
-        "activeTabID" : "675E2AB6-CA97-449E-A156-040583EF3850",
+        "activeTabID" : "6E195DD1-BAB7-4E1D-A2F6-EAD19E420972",
         "id" : "3B09DC03-3A38-4776-B478-74CBD92EDA80"
       }
     ]
@@ -89,7 +89,7 @@
                     }
                   },
                   "id" : "78C9B6B2-3DA3-43CF-AC09-50B9351D36E6",
-                  "isOpen" : true,
+                  "isOpen" : false,
                   "name" : "Aim"
                 },
                 "items" : [
@@ -148,20 +148,154 @@
               }
             },
             {
-              "control" : {
-                "container" : {
-                  "control" : {
-                    "info" : {
-                      "address" : null,
-                      "id" : "45AA42A1-B18D-4ACA-9AD2-3021B30C7617",
-                      "name" : "o_rot1"
-                    },
-                    "maximum" : 1,
-                    "minimum" : 0,
-                    "type" : "slider",
-                    "value" : 0.286
+              "group" : {
+                "info" : {
+                  "address" : {
+                    "bypass" : {
+
+                    }
+                  },
+                  "id" : "F95F8407-66D5-430C-9FA0-2A9DECA32BF3",
+                  "isOpen" : false,
+                  "name" : "Rotators"
+                },
+                "items" : [
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "45AA42A1-B18D-4ACA-9AD2-3021B30C7617",
+                            "name" : "o_rot1"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0.291
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "214A993E-15A3-4236-9CC4-A34E6278E5D0",
+                            "name" : "o_rot2"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 0
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "581F1AC0-15ED-4B49-9051-35CFDB0A06E7",
+                            "name" : "o_birot1"
+                          },
+                          "maximum" : 1,
+                          "minimum" : -1,
+                          "type" : "slider",
+                          "value" : 0.043
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "69E0ACC5-A32A-4252-AE3E-9EAD1E1FE233",
+                            "name" : "o_birot2"
+                          },
+                          "maximum" : 1,
+                          "minimum" : -1,
+                          "type" : "slider",
+                          "value" : 0.041
+                        }
+                      }
+                    }
                   }
-                }
+                ]
+              }
+            },
+            {
+              "group" : {
+                "info" : {
+                  "address" : {
+                    "bypass" : {
+
+                    }
+                  },
+                  "id" : "CB8F1F4B-09CE-43B7-8B50-6E2535205B73",
+                  "isOpen" : true,
+                  "name" : "Pan"
+                },
+                "items" : [
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "7590D901-C8FF-4920-BA72-D51CDCFBE4C5",
+                            "name" : "o_pan_sc"
+                          },
+                          "maximum" : 1,
+                          "minimum" : 0,
+                          "type" : "slider",
+                          "value" : 1
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "6D12D156-0442-4B7D-84E9-6F71FC1333F8",
+                            "name" : "o_pan_x"
+                          },
+                          "maximum" : 1,
+                          "minimum" : -1,
+                          "type" : "slider",
+                          "value" : -0.036
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "control" : {
+                      "container" : {
+                        "control" : {
+                          "info" : {
+                            "address" : null,
+                            "id" : "9CF5B3D3-C948-46BC-A70E-BE2041A1E925",
+                            "name" : "o_pan_y"
+                          },
+                          "maximum" : 1,
+                          "minimum" : -1,
+                          "type" : "slider",
+                          "value" : 0.002
+                        }
+                      }
+                    }
+                  }
+                ]
               }
             }
           ]
@@ -591,6 +725,32 @@
                 ]
               }
             }
+          ]
+        }
+      }
+    },
+    {
+      "address" : {
+        "bypass" : {
+
+        }
+      },
+      "id" : "FD9A87E0-3093-4016-829A-9AC9ADF09B33",
+      "name" : "Faders",
+      "rootItem" : {
+        "group" : {
+          "info" : {
+            "address" : {
+              "bypass" : {
+
+              }
+            },
+            "id" : "8FA0F09D-BE28-45EA-B779-42512B1E5D40",
+            "isOpen" : true,
+            "name" : "Root"
+          },
+          "items" : [
+
           ]
         }
       }
