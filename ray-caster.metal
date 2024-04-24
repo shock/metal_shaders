@@ -228,13 +228,23 @@ float3 toneMap( float3 color ) {
   return color;
 }
 
+constant int numTextures = 4; // Number of textures
+
+// Define the structure for the argument buffer
+struct Textures {
+    array<texture2d<float>, numTextures> textures; // Array of 4 textures
+};
+
+// a
 fragment float4 fragmentShader0(float4 frag_coord [[position]],
                                 constant SysUniforms& sys_u [[buffer(0)]],
                                 constant Glsl3Uniforms& _u [[buffer(1)]],
-                                texture2d<float> buffer0 [[texture(0)]],
-                                texture2d<float> buffer1 [[texture(1)]],
-                                texture2d<float> buffer2 [[texture(2)]],
-                                texture2d<float> buffer3 [[texture(3)]]
+                                       array<texture2d<float>, 4> buffers [[texture(0)]]
+                                    //    constant Textures& myTextures [[buffer(2)]]
+                                // texture2d<float> buffer0 [[texture(0)]],
+                                // texture2d<float> buffer1 [[texture(1)]],
+                                // texture2d<float> buffer2 [[texture(2)]],
+                                // texture2d<float> buffer3 [[texture(3)]]
                                )
 {
     float3 color = getPixelColor(frag_coord.xy, sys_u.resolution, _u);
@@ -245,29 +255,23 @@ fragment float4 fragmentShader0(float4 frag_coord [[position]],
 fragment float4 fragmentShader1(float4 frag_coord [[position]],
                                 constant SysUniforms& sys_u [[buffer(0)]],
                                 constant Glsl3Uniforms& _u [[buffer(1)]],
-                                texture2d<float> buffer0 [[texture(0)]],
-                                texture2d<float> buffer1 [[texture(1)]],
-                                texture2d<float> buffer2 [[texture(2)]],
-                                texture2d<float> buffer3 [[texture(3)]]
+                                       array<texture2d<float>, 4> buffers [[texture(0)]]
                                )
 {
-    float3 color = buffer0.sample(sampler(mag_filter::linear, min_filter::linear), frag_coord.xy/sys_u.resolution).rgb;
+    float3 color = buffers[0].sample(sampler(mag_filter::linear, min_filter::linear), frag_coord.xy/sys_u.resolution).rgb;
     color *= float3(1,0.5,0.5);
     return float4(color, 1);
 }
 
-// needed to convert from .rgba16Unorm to .bgra8Unorm
-fragment float4 fragmentShader2(float4 frag_coord [[position]],
-                                constant SysUniforms& sys_u [[buffer(0)]],
-                                constant Glsl3Uniforms& _u [[buffer(1)]],
-                                texture2d<float> buffer0 [[texture(0)]],
-                                texture2d<float> buffer1 [[texture(1)]],
-                                texture2d<float> buffer2 [[texture(2)]],
-                                texture2d<float> buffer3 [[texture(3)]],
-                                texture2d<float> lastBuffer [[texture(4)]]
-                               )
-{
-    float4 pixelColor = buffer1.sample(sampler(mag_filter::linear, min_filter::linear), frag_coord.xy/sys_u.resolution);
-    // pixelColor *= float4(0.5);
-    return pixelColor * float4(0.5,0.5,1,1);
-}
+// // needed to convert from .rgba16Unorm to .bgra8Unorm
+// fragment float4 fragmentShader2(float4 frag_coord [[position]],
+//                                 constant SysUniforms& sys_u [[buffer(0)]],
+//                                 constant Glsl3Uniforms& _u [[buffer(1)]],
+//                                        array<texture2d<float>, 4> buffers [[texture(0)]],
+//                                 texture2d<float> lastBuffer [[texture(4)]]
+//                                )
+// {
+//     float3 color = buffers[1].sample(sampler(mag_filter::linear, min_filter::linear), frag_coord.xy/sys_u.resolution).rgb;
+//     color * float3(0.5,0.5,1);
+//     return float4(color, 1);
+// }
