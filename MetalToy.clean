@@ -206,7 +206,7 @@
                           "maximum" : 1,
                           "minimum" : -1,
                           "type" : "slider",
-                          "value" : -0.036
+                          "value" : 0.002
                         }
                       }
                     }
@@ -332,7 +332,7 @@
                     }
                   },
                   "id" : "8E3FC104-6438-4866-AB21-F7A672CCB579",
-                  "isOpen" : true,
+                  "isOpen" : false,
                   "name" : "o_col1"
                 },
                 "items" : [
@@ -399,7 +399,7 @@
                     }
                   },
                   "id" : "884FC104-6438-4866-AB21-F7A672CCB579",
-                  "isOpen" : true,
+                  "isOpen" : false,
                   "name" : "o_col2"
                 },
                 "items" : [
@@ -466,7 +466,7 @@
                     }
                   },
                   "id" : "CAB3F104-6438-4866-AB21-F7A672CCB579",
-                  "isOpen" : true,
+                  "isOpen" : false,
                   "name" : "o_col3"
                 },
                 "items" : [
@@ -533,7 +533,7 @@
                     }
                   },
                   "id" : "0C4FC104-6438-4866-AB21-F7A672CCB579",
-                  "isOpen" : true,
+                  "isOpen" : false,
                   "name" : "o_col4"
                 },
                 "items" : [
@@ -600,7 +600,7 @@
                     }
                   },
                   "id" : "0C5FC104-6438-4866-AB21-F7A672CCB579",
-                  "isOpen" : true,
+                  "isOpen" : false,
                   "name" : "o_col5"
                 },
                 "items" : [
@@ -667,7 +667,7 @@
                     }
                   },
                   "id" : "0C6FC104-6438-4866-AB21-F7A672CCB579",
-                  "isOpen" : true,
+                  "isOpen" : false,
                   "name" : "o_col6"
                 },
                 "items" : [
@@ -866,6 +866,40 @@
                     }
                   }
                 ]
+              }
+            },
+            {
+              "control" : {
+                "container" : {
+                  "control" : {
+                    "info" : {
+                      "address" : null,
+                      "id" : "1441B596-0CC9-4DFB-A28A-648E95C48392",
+                      "name" : "o_long"
+                    },
+                    "maximum" : 1,
+                    "minimum" : 0,
+                    "type" : "slider",
+                    "value" : 0
+                  }
+                }
+              }
+            },
+            {
+              "control" : {
+                "container" : {
+                  "control" : {
+                    "info" : {
+                      "address" : null,
+                      "id" : "1506B0D9-A313-4F53-883D-D467EC27301D",
+                      "name" : "Slider"
+                    },
+                    "maximum" : 1,
+                    "minimum" : 0,
+                    "type" : "slider",
+                    "value" : 0
+                  }
+                }
               }
             }
           ]
