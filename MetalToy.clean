@@ -3,7 +3,7 @@
   "panels" : [
     [
       {
-        "activeTabID" : "6E195DD1-BAB7-4E1D-A2F6-EAD19E420972",
+        "activeTabID" : "FD9A87E0-3093-4016-829A-9AC9ADF09B33",
         "id" : "3B09DC03-3A38-4776-B478-74CBD92EDA80"
       }
     ]
@@ -55,7 +55,7 @@
                           "maximum" : 10,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 6.78
+                          "value" : 6.36
                         }
                       }
                     }
@@ -72,7 +72,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.75
+                          "value" : 0.144
                         }
                       }
                     }
@@ -92,7 +92,7 @@
                     "maximum" : 1,
                     "minimum" : 0,
                     "type" : "slider",
-                    "value" : 0.187
+                    "value" : 0.403
                   }
                 }
               }
@@ -156,7 +156,7 @@
                           "maximum" : 1,
                           "minimum" : -1,
                           "type" : "slider",
-                          "value" : 0.141
+                          "value" : 0.016
                         }
                       }
                     }
@@ -189,7 +189,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 1
+                          "value" : 0.557
                         }
                       }
                     }
@@ -206,7 +206,7 @@
                           "maximum" : 1,
                           "minimum" : -1,
                           "type" : "slider",
-                          "value" : 0.002
+                          "value" : 0.006
                         }
                       }
                     }
@@ -223,7 +223,7 @@
                           "maximum" : 1,
                           "minimum" : -1,
                           "type" : "slider",
-                          "value" : 0.002
+                          "value" : 0.047
                         }
                       }
                     }
@@ -332,7 +332,7 @@
                     }
                   },
                   "id" : "8E3FC104-6438-4866-AB21-F7A672CCB579",
-                  "isOpen" : false,
+                  "isOpen" : true,
                   "name" : "o_col1"
                 },
                 "items" : [
@@ -348,7 +348,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.389
+                          "value" : 0.276
                         }
                       }
                     }
@@ -365,7 +365,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.712
+                          "value" : 0.487
                         }
                       }
                     }
@@ -382,7 +382,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.597
+                          "value" : 1
                         }
                       }
                     }
@@ -399,7 +399,7 @@
                     }
                   },
                   "id" : "884FC104-6438-4866-AB21-F7A672CCB579",
-                  "isOpen" : false,
+                  "isOpen" : true,
                   "name" : "o_col2"
                 },
                 "items" : [
@@ -415,7 +415,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.433
+                          "value" : 0.38
                         }
                       }
                     }
@@ -432,7 +432,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.694
+                          "value" : 0.623
                         }
                       }
                     }
@@ -449,7 +449,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.898
+                          "value" : 0.303
                         }
                       }
                     }
@@ -466,7 +466,7 @@
                     }
                   },
                   "id" : "CAB3F104-6438-4866-AB21-F7A672CCB579",
-                  "isOpen" : false,
+                  "isOpen" : true,
                   "name" : "o_col3"
                 },
                 "items" : [
@@ -482,7 +482,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.539
+                          "value" : 1
                         }
                       }
                     }
@@ -499,7 +499,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.682
+                          "value" : 1
                         }
                       }
                     }
@@ -516,7 +516,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.766
+                          "value" : 1
                         }
                       }
                     }
@@ -775,7 +775,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.238
+                          "value" : 0
                         }
                       }
                     }
@@ -809,7 +809,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0
+                          "value" : 1
                         }
                       }
                     }
@@ -880,7 +880,7 @@
                     "maximum" : 1,
                     "minimum" : 0,
                     "type" : "slider",
-                    "value" : 0.014
+                    "value" : 0.405
                   }
                 }
               }

@@ -60,12 +60,25 @@ struct Light {
     float3 intensity;
 };
 
+struct Scene {
+    float4 plane;
+    float4 sphere;
+    thread Light *lights;
+};
+
 constant int MAX_LIGHTS = 1;
 
 void initLights(thread Light *lights, constant Glsl3Uniforms &_u ) {
     lights[0].pos = float4(0,10 + 1000*o_fad1,0,0);
     lights[0].color = o_col3;
-    lights[0].intensity = 10*o_long;
+    lights[0].intensity = 2*o_long;
+}
+
+Scene initScene(thread Scene &scene, constant Glsl3Uniforms &_u) {
+    scene.plane = float4(0,1,0,0-100*o_fad2);
+    scene.sphere = float4(0,0+300*o_fad3,0,70);
+    initLights(scene.lights, _u);
+    return scene;
 }
 
 struct RayData {
@@ -76,6 +89,7 @@ struct RayData {
     float3 nor;
     int matid;
     int flags;
+    Scene scene;
 };
 
 struct Context {
@@ -96,9 +110,6 @@ float getCheckerboardColor(float x, float y, float size) {
         return 0;
     }
 }
-
-constant float4 plane = float4(0,1,0,-10);
-constant float4 sphere = float4(0,3,0,70);
 
 RayData newRayData(float3 ro, float3 rd) {
     RayData rdat = RayData();
@@ -128,25 +139,29 @@ float3 calcPointLight( thread Light pointLight, thread RayData &rdat, constant G
     return diffuse*100000;
 }
 
-float3 calcLight( thread Light *lights, thread RayData &rdat,constant Glsl3Uniforms &_u )
+float3 calcLight( thread RayData &rdat, constant Glsl3Uniforms &_u )
 {
-    Light pointLight = lights[0];
+    Scene scene = rdat.scene;
+    Light pointLight = scene.lights[0];
     float3 light = float3(0);
     light += calcPointLight(pointLight, rdat, _u);
     return light;
 }
 
 // float intersectRay( float3 ro, float3 rd, float px, float td, int mask, out float3 pos, out float3 nor, out int matid  ) {
-float intersectRay( float3 ro, float3 rd, float px, thread RayData &rdat  )
+float intersectRay( float3 ro, float3 rd, float px, thread RayData &rdat )
 {
     rdat.matid = BACKDROP;
     float d;
+    Scene scene = rdat.scene;
+    float4 plane = scene.plane;
+    float4 sphere = scene.sphere;
 
     d = planeIntersect(ro, rd, plane);
-    if( d > 0. && d < rdat.md && false) {
+    if( d > 0. && d < rdat.md ) {
         float3 pos = ro + rd * d;
         float cb = getCheckerboardColor(pos.x, pos.z, 40);
-        if( cb == 1 ) {
+        if( cb == 1 || true ) {
             float s = sign(-dot(rd, plane.xyz));
             rdat.pos = ro + rd * d; rdat.nor = plane.xyz*s; rdat.matid = FLOOR; rdat.md = d;
         }
@@ -162,11 +177,15 @@ float intersectRay( float3 ro, float3 rd, float px, thread RayData &rdat  )
 }
 
 float3 getRayColor( float3 ro, float3 rd, float px, constant Glsl3Uniforms &_u ) {
+    Scene scene;
     Light lights[MAX_LIGHTS];
-    initLights(lights, _u);
+    scene.lights = lights;
+    initScene(scene, _u);
     float3 color = rd;
 
     RayData rdat = newRayData(ro, rd);
+    rdat.scene = scene;
+
     intersectRay( ro, rd, px, rdat );
     if( rdat.flags > 0 ) return float3(1,0,1);
     if( rdat.matid == BACKDROP ) {
@@ -176,13 +195,13 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant Glsl3Uniforms &_u )
         return skyDome(rd, stars, clouds, daylight, vmin(o_resolution));
     }
     if( rdat.matid == FLOOR ) {
-        float c = chex(rdat.pos.xz/10);
+        float c = chex(rdat.pos.xz/50);
         color = o_col2 * (c/2+0.5);
     }
     if( rdat.matid == SPHERE ) {
         color = o_col1;
     }
-    return color * calcLight( lights, rdat, _u );
+    return color * calcLight( rdat, _u );
 }
 
 #ifndef LOOK_AT
