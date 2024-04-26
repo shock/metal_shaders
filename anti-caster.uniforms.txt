@@ -8,11 +8,11 @@ o_aim, 0.0, 0.016
 o_aim_sc, 0.543
 o_pan, 0.006, 0.047
 o_pan_sc, 0.557
-o_distance, 0.144
+o_distance, 0.139
 o_scale, 6.36
 o_fad1, 0.0
-o_fad2, 0.0
-o_fad3, 1.0
+o_fad2, 0.04
+o_fad3, 0.864
 o_fad4, 0.0
 o_fad5, 0.0
 o_fad6, 0.0
@@ -66,4 +66,4 @@ o_tog2, 0.0
 o_tog3, 0.0
 o_tog4, 0.0
 o_tog5, 0.0
-u_resolution, 529.0, 495.0
+u_resolution, 537.0, 501.0
