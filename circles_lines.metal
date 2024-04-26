@@ -1,8 +1,9 @@
 #include <metal_stdlib>
 using namespace metal;
+#include "include/metaltoy.metal" // mandatory
 
 // #define texture texture2D
-#define ut iTime
+// #define ut iTime
 #define kPI 3.14159265
 #define khPI 1.57079633
 #define k3qPI 4.71238898
@@ -24,6 +25,14 @@ using namespace metal;
 
 class TestClass {
 
+  constant SysUniforms *sys_u;
+
+  public:
+
+   TestClass( constant SysUniforms *sys_u ) {
+    sys_u = sys_u;
+  }
+
   float smoothMin(float x, float min) {
     float k = (1.-min);
     return SS((x - min)/k)*k+min;
@@ -39,7 +48,7 @@ class TestClass {
   #define m float2(iMouse.xy/iResolution.xy)
   #define m2 (float2(iMouse.xy/iResolution)*2.-1.)
   #define md ((m - 0.5) * 2.)
-  #define time iTime
+  // #define time iTime
 
   float SCALE = 2.;
   float cameraDistance = 1.;
@@ -281,13 +290,13 @@ class TestClass {
   }
 
   float2 iResolution;
-  float iTime = 0;
+  float time = 0;
   float2 iMouse = float2(0);
 
 public:
   void setUniforms( float u_time, float2 u_mouse, float2 u_resolution ) {
     iResolution = u_resolution;
-    iTime = u_time;
+    time = u_time;
     iMouse = u_mouse;
   }
 
@@ -319,35 +328,18 @@ public:
 };
 
 fragment float4 fragmentShader0(float4 frag_coord [[position]],
-                               constant float2& u_resolution [[buffer(0)]],
-                               constant uint& u_frame [[buffer(1)]],
-                               constant float& u_time [[buffer(2)]],
-                               constant uint& u_pass [[buffer(3)]],
-                               texture2d<float> buffer0 [[texture(0)]],
-                               texture2d<float> buffer1 [[texture(1)]],
-                               texture2d<float> buffer2 [[texture(2)]],
-                               texture2d<float> buffer3 [[texture(3)]]
+                                constant SysUniforms& sys_u [[buffer(0)]],
+                                array<texture2d<float>, 4> buffers [[texture(0)]]
                                )
 {
-  // if( u_frame > 0 ) {
-  //   discard_fragment();
-  //   return float4(0);
-  // }
-
-
-  TestClass tc;
-  float2 u_mouse = float2(fract(u_time*0.1)*u_resolution);
-  tc.setUniforms( u_time, u_mouse, u_resolution );
+  TestClass tc = TestClass(&sys_u);
+  float2 u_mouse = float2(fract(sys_u.time*0.1)*sys_u.resolution);
+  tc.setUniforms( sys_u.time, u_mouse, sys_u.resolution );
   return tc.mainImage( frag_coord.xy );
 
   float2 pos = frag_coord.xy;
 
   pos = floor(pos);
-  float2 shade = pos/u_resolution.xy;
+  float2 shade = pos/sys_u.resolution.xy;
   return(float4(float3(shade, 1),1));
 }
-
-// void main() {
-//   mainImage(gl_FragColor, gl_FragCoord.xy);
-//   if( gl_FragCoord.y < 10. ) { gl_FragColor=float4(pal(gl_FragCoord.x/iResolution.x),1.); }
-// }

@@ -55,7 +55,7 @@
                           "maximum" : 10,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 6.78
+                          "value" : 6.375
                         }
                       }
                     }
