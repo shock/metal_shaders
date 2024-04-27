@@ -87,17 +87,16 @@ SharedState(constant SysUniforms *sys_u_in, constant Glsl3Uniforms *_u_in)
 
 }
 
-void initLights(thread Light *lights ) {
+void initLights() {
     lights[0].pos = float4(0,10 + 1000*o_fad1,0,0);
     lights[0].color = o_col3;
     lights[0].intensity = 2*o_long;
 }
 
-Scene initScene() {
+void initScene() {
     scene.plane = float4(0,1,0,0-100*o_fad2);
     scene.sphere = float4(0,0+300*o_fad3,0,70);
-    initLights(scene.lights);
-    return scene;
+    initLights();
 }
 
 struct RayData {
@@ -109,12 +108,6 @@ struct RayData {
     int matid;
     int flags;
     Scene scene;
-};
-
-struct Context {
-    Glsl3Uniforms _u;
-    thread Light *lights;
-    RayData rdat;
 };
 
 float getCheckerboardColor(float x, float y, float size) {
