@@ -319,7 +319,7 @@ public:
     float3 col = getRayColor( camera, rd );
 
     // dithering
-    col += (1.0/255.0)*hash3(cartesian.x+13.3214*cartesian.y);
+    // col += (1.0/255.0)*hash3(cartesian.x+13.3214*cartesian.y);
 
     // col *= 1. - texture(u_tex0, q).rgb *0.2;
     float4 fragColor = float4(col,1);
@@ -335,11 +335,18 @@ fragment float4 fragmentShader0(float4 frag_coord [[position]],
   TestClass tc = TestClass(&sys_u);
   float2 u_mouse = float2(fract(sys_u.time*0.1)*sys_u.resolution);
   tc.setUniforms( sys_u.time, u_mouse, sys_u.resolution );
-  return tc.mainImage( frag_coord.xy );
+  // return tc.mainImage( frag_coord.xy );
 
-  float2 pos = frag_coord.xy;
-
-  pos = floor(pos);
-  float2 shade = pos/sys_u.resolution.xy;
-  return(float4(float3(shade, 1),1));
+  float3 color = tc.mainImage( frag_coord.xy ).rgb;
+  float3 pixel = buffers[0].sample(sampler(mag_filter::linear, min_filter::linear), frag_coord.xy/sys_u.resolution).rgb;
+  return float4(color+pixel*0.99,1);
 }
+
+fragment float4 fragmentShader1(float4 frag_coord [[position]],
+                                constant SysUniforms& sys_u [[buffer(0)]],
+                                array<texture2d<float>, 4> buffers [[texture(0)]]
+                               )
+{
+    float3 color = buffers[0].sample(sampler(mag_filter::linear, min_filter::linear), frag_coord.xy/sys_u.resolution).rgb;
+    return float4(color, 1);
+ }
