@@ -68,17 +68,35 @@ struct Scene {
 
 constant int MAX_LIGHTS = 1;
 
-void initLights(thread Light *lights, constant Glsl3Uniforms &_u ) {
+#define u_resolution sys_u.resolution
+
+class SharedState {
+
+constant SysUniforms &sys_u;
+constant Glsl3Uniforms &_u;
+Scene scene;
+Light lights[MAX_LIGHTS];
+
+public:
+
+SharedState(constant SysUniforms *sys_u_in, constant Glsl3Uniforms *_u_in)
+    : sys_u(*sys_u_in), _u(*_u_in)
+{
+    scene.lights = lights;
+    initScene();
+
+}
+
+void initLights() {
     lights[0].pos = float4(0,10 + 1000*o_fad1,0,0);
     lights[0].color = o_col3;
     lights[0].intensity = 2*o_long;
 }
 
-Scene initScene(thread Scene &scene, constant Glsl3Uniforms &_u) {
+void initScene() {
     scene.plane = float4(0,1,0,0-100*o_fad2);
     scene.sphere = float4(0,0+300*o_fad3,0,70);
-    initLights(scene.lights, _u);
-    return scene;
+    initLights();
 }
 
 struct RayData {
@@ -90,12 +108,6 @@ struct RayData {
     int matid;
     int flags;
     Scene scene;
-};
-
-struct Context {
-    Glsl3Uniforms _u;
-    thread Light *lights;
-    RayData rdat;
 };
 
 float getCheckerboardColor(float x, float y, float size) {
@@ -123,7 +135,7 @@ RayData newRayData(float3 ro, float3 rd) {
     return rdat;
 }
 
-float3 calcPointLight( thread Light pointLight, thread RayData &rdat, constant Glsl3Uniforms &_u )
+float3 calcPointLight( thread Light pointLight, thread RayData &rdat )
 {
     // Calculate light properties
     float3 toLight = pointLight.pos.xyz - rdat.pos;
@@ -139,12 +151,12 @@ float3 calcPointLight( thread Light pointLight, thread RayData &rdat, constant G
     return diffuse*100000;
 }
 
-float3 calcLight( thread RayData &rdat, constant Glsl3Uniforms &_u )
+float3 calcLight( thread RayData &rdat )
 {
     Scene scene = rdat.scene;
     Light pointLight = scene.lights[0];
     float3 light = float3(0);
-    light += calcPointLight(pointLight, rdat, _u);
+    light += calcPointLight(pointLight, rdat);
     return light;
 }
 
@@ -176,11 +188,7 @@ float intersectRay( float3 ro, float3 rd, float px, thread RayData &rdat )
     return rdat.md;
 }
 
-float3 getRayColor( float3 ro, float3 rd, float px, constant Glsl3Uniforms &_u ) {
-    Scene scene;
-    Light lights[MAX_LIGHTS];
-    scene.lights = lights;
-    initScene(scene, _u);
+float3 getRayColor( float3 ro, float3 rd, float px ) {
     float3 color = rd;
 
     RayData rdat = newRayData(ro, rd);
@@ -192,7 +200,7 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant Glsl3Uniforms &_u )
         float stars = 0.15;
         float clouds = 0.2;
         float daylight = 0.2;
-        return skyDome(rd, stars, clouds, daylight, vmin(o_resolution));
+        return skyDome(rd, stars, clouds, daylight, vmin(u_resolution));
     }
     if( rdat.matid == FLOOR ) {
         float c = chex(rdat.pos.xz/50);
@@ -201,7 +209,7 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant Glsl3Uniforms &_u )
     if( rdat.matid == SPHERE ) {
         color = o_col1;
     }
-    return color * calcLight( rdat, _u );
+    return color * calcLight( rdat );
 }
 
 #ifndef LOOK_AT
@@ -212,7 +220,7 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant Glsl3Uniforms &_u )
 #define CAM_ZOOM (0.1+ROT1*3.9)
 #endif
 
-float3 getPixelColor( float2 fragCoord, float2 u_resolution, constant Glsl3Uniforms &_u ) {
+float3 getPixelColor( float2 fragCoord) {
     float scale = SCALE, le = CAM_ZOOM;
     float minD = min(u_resolution.x, u_resolution.y);
     float2 ndc = 2.*(fragCoord-u_resolution*0.5) / u_resolution.x;
@@ -231,10 +239,13 @@ float3 getPixelColor( float2 fragCoord, float2 u_resolution, constant Glsl3Unifo
 #endif
     float3 rd = getRayDirection(cameraMatrix,ndc,le);
 
-    float3 color = getRayColor( ro, rd, px, _u );
+    float3 color = getRayColor( ro, rd, px );
 
     return color;
 }
+
+
+}; // end SharedState
 
 // ACES Filmic tone-mapping approximated - Krzysztof Narkowicz
 float3 ACESFilmicApprox(float3 x) { float a = 2.51, b = 0.03, c = 2.43, d = 0.59, e = 0.14;
@@ -263,8 +274,9 @@ fragment float4 fragmentShader0(float4 frag_coord [[position]],
                                 array<texture2d<float>, 4> buffers [[texture(0)]]
                                )
 {
+    SharedState tc = SharedState( &sys_u, &_u );
     float2 offset = float2(0,0);
-    float3 color = getPixelColor(frag_coord.xy+offset, sys_u.resolution, _u);
+    float3 color = tc.getPixelColor(frag_coord.xy+offset);
     return float4(color, 1);
 }
 
@@ -274,8 +286,9 @@ fragment float4 fragmentShader1(float4 frag_coord [[position]],
                                 array<texture2d<float>, 4> buffers [[texture(0)]]
                                )
 {
+    SharedState tc = SharedState( &sys_u, &_u );
     float2 offset = float2(0.5,0);
-    float3 color = getPixelColor(frag_coord.xy+offset, sys_u.resolution, _u);
+    float3 color = tc.getPixelColor(frag_coord.xy+offset);
     return float4(color, 1);
 }
 
@@ -287,8 +300,9 @@ fragment float4 fragmentShader2(float4 frag_coord [[position]],
                                 texture2d<float> lastBuffer [[texture(4)]]
                                )
 {
+    SharedState tc = SharedState( &sys_u, &_u );
     float2 offset = float2(0.5,0.5);
-    float3 color = getPixelColor(frag_coord.xy+offset, sys_u.resolution, _u);
+    float3 color = tc.getPixelColor(frag_coord.xy+offset);
     return float4(color, 1);
 }
 
@@ -300,8 +314,9 @@ fragment float4 fragmentShader3(float4 frag_coord [[position]],
                                 texture2d<float> lastBuffer [[texture(4)]]
                                )
 {
+    SharedState tc = SharedState( &sys_u, &_u );
     float2 offset = float2(0,0.5);
-    float3 color = getPixelColor(frag_coord.xy+offset, sys_u.resolution, _u);
+    float3 color = tc.getPixelColor(frag_coord.xy+offset);
     return float4(color, 1);
 }
 
