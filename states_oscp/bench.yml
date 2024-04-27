@@ -1,0 +1,177 @@
+---
+patch: !ruby/hash:HashObj
+  :vectors:
+  - !ruby/hash:HashObj
+    :address: "/o_color"
+    :components:
+    - !ruby/hash:HashObj
+      :address: "/o_red"
+    - !ruby/hash:HashObj
+      :address: "/o_green"
+    - !ruby/hash:HashObj
+      :address: "/o_blue"
+  - !ruby/hash:HashObj
+    :address: "/o_aim"
+    :components:
+    - !ruby/hash:HashObj
+      :address: "/o_aim_x"
+    - !ruby/hash:HashObj
+      :address: "/o_aim_y"
+  - !ruby/hash:HashObj
+    :address: "/o_pan"
+    :components:
+    - !ruby/hash:HashObj
+      :address: "/o_pan_x"
+    - !ruby/hash:HashObj
+      :address: "/o_pan_y"
+  - !ruby/hash:HashObj
+    :address: "/o_col1"
+    :components:
+    - !ruby/hash:HashObj
+      :address: "/o_col1r"
+    - !ruby/hash:HashObj
+      :address: "/o_col1g"
+    - !ruby/hash:HashObj
+      :address: "/o_col1b"
+  - !ruby/hash:HashObj
+    :address: "/o_col2"
+    :components:
+    - !ruby/hash:HashObj
+      :address: "/o_col2r"
+    - !ruby/hash:HashObj
+      :address: "/o_col2g"
+    - !ruby/hash:HashObj
+      :address: "/o_col2b"
+  - !ruby/hash:HashObj
+    :address: "/o_col3"
+    :components:
+    - !ruby/hash:HashObj
+      :address: "/o_col3r"
+    - !ruby/hash:HashObj
+      :address: "/o_col3g"
+    - !ruby/hash:HashObj
+      :address: "/o_col3b"
+  - !ruby/hash:HashObj
+    :address: "/o_col4"
+    :components:
+    - !ruby/hash:HashObj
+      :address: "/o_col4r"
+    - !ruby/hash:HashObj
+      :address: "/o_col4g"
+    - !ruby/hash:HashObj
+      :address: "/o_col4b"
+  - !ruby/hash:HashObj
+    :address: "/o_col5"
+    :components:
+    - !ruby/hash:HashObj
+      :address: "/o_col5r"
+    - !ruby/hash:HashObj
+      :address: "/o_col5g"
+    - !ruby/hash:HashObj
+      :address: "/o_col5b"
+  - !ruby/hash:HashObj
+    :address: "/o_col6"
+    :components:
+    - !ruby/hash:HashObj
+      :address: "/o_col6r"
+    - !ruby/hash:HashObj
+      :address: "/o_col6g"
+    - !ruby/hash:HashObj
+      :address: "/o_col6b"
+  :swizzles:
+  - !ruby/hash:HashObj
+    :address: "/o_pan"
+    :mappings:
+    - !ruby/hash:HashObj
+      :negate: false
+      :source: 1
+      :translate: 0
+      :default_to: 0
+    - !ruby/hash:HashObj
+      :negate: false
+      :source: 0
+      :translate: 0
+      :default_to: 0
+  - !ruby/hash:HashObj
+    :address: "/o_multixy/1"
+    :mappings:
+    - !ruby/hash:HashObj
+      :negate: false
+      :source: 0
+      :translate: 0
+      :default_to: 0
+    - !ruby/hash:HashObj
+      :negate: true
+      :source: 1
+      :translate: 0
+      :default_to: 0
+  - !ruby/hash:HashObj
+    :address: "/o_multixy/2"
+    :mappings:
+    - !ruby/hash:HashObj
+      :negate: false
+      :source: 0
+      :translate: 0
+      :default_to: 0
+    - !ruby/hash:HashObj
+      :negate: true
+      :source: 1
+      :translate: 0
+      :default_to: 0
+  - !ruby/hash:HashObj
+    :address: "/o_multixy/3"
+    :mappings:
+    - !ruby/hash:HashObj
+      :negate: false
+      :source: 0
+      :translate: 0
+      :default_to: 0
+    - !ruby/hash:HashObj
+      :negate: true
+      :source: 1
+      :translate: 0
+      :default_to: 0
+  - !ruby/hash:HashObj
+    :address: "/o_multixy/4"
+    :mappings:
+    - !ruby/hash:HashObj
+      :negate: false
+      :source: 0
+      :translate: 0
+      :default_to: 0
+    - !ruby/hash:HashObj
+      :negate: true
+      :source: 1
+      :translate: 0
+      :default_to: 0
+  :defaults: 
+client_state:
+- :address: "/o_aim_sc"
+  :vals:
+  - 0.48899999260902405
+- :address: "/o_aim_y"
+  :vals:
+  - 0.01899999938905239
+- :address: "/o_exp"
+  :vals:
+  - 1.0
+- :address: "/o_fad1"
+  :vals:
+  - 0.06700000166893005
+- :address: "/o_fad2"
+  :vals:
+  - 0.0
+- :address: "/o_fad3"
+  :vals:
+  - 0.8130000233650208
+- :address: "/o_long"
+  :vals:
+  - 0.08299999684095383
+- :address: "/o_pan_x"
+  :vals:
+  - 0.0020000000949949026
+- :address: "/o_pan_y"
+  :vals:
+  - 0.014999999664723873
+client_ip: 127.0.0.1
+client_port: 57605
