@@ -4,15 +4,15 @@ o_blue, 0.0
 o_gam_r, 0.0
 o_gam_g, 0.0
 o_gam_b, 0.0
-o_aim, 0.0, 0.016
-o_aim_sc, 0.543
-o_pan, 0.006, 0.047
+o_aim, 0.0, 0.019
+o_aim_sc, 0.489
+o_pan, 0.002, 0.015
 o_pan_sc, 0.557
 o_distance, 0.139
 o_scale, 6.375
-o_fad1, 0.0
-o_fad2, 0.04
-o_fad3, 0.864
+o_fad1, 0.067
+o_fad2, 0.0
+o_fad3, 0.813
 o_fad4, 0.0
 o_fad5, 0.0
 o_fad6, 0.0
@@ -24,7 +24,7 @@ o_rot1, 0.403
 o_rot2, 0.0
 o_birot1, 0.043
 o_birot2, 0.041
-o_long, 0.405
+o_long, 0.083
 o_exp, 1.0
 o_bifad1, 0.0
 o_bifad2, 0.0
@@ -66,4 +66,4 @@ o_tog2, 0.0
 o_tog3, 0.0
 o_tog4, 0.0
 o_tog5, 0.0
-u_resolution, 536.0, 485.0
+u_resolution, 715.0, 616.0
