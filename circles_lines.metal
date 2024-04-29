@@ -327,6 +327,20 @@ public:
   }
 };
 
+// ACES Filmic tone-mapping approximated - Krzysztof Narkowicz
+float3 ACESFilmicApprox(float3 x) { float a = 2.51, b = 0.03, c = 2.43, d = 0.59, e = 0.14;
+    return clamp((x*(a*x+b))/(x*(c*x+d)+e),0.,1.); }
+
+float3 toneMap( float3 color ) {
+  // map from HDR to Linear
+  color = ACESFilmicApprox(color); // ACES Filmic HDR Tone mapping
+  // gamma - map from Linear to sRGB
+  color = pow( color, float3(0.4545) );
+
+  return color;
+}
+
+
 fragment float4 fragmentShader0(float4 frag_coord [[position]],
                                 constant SysUniforms& sys_u [[buffer(0)]],
                                 array<texture2d<float>, 4> buffers [[texture(0)]]
@@ -348,5 +362,5 @@ fragment float4 fragmentShader1(float4 frag_coord [[position]],
                                )
 {
     float3 color = buffers[0].sample(sampler(mag_filter::linear, min_filter::linear), frag_coord.xy/sys_u.resolution).rgb;
-    return float4(color, 1);
+    return float4(toneMap(color), 1);
  }
