@@ -48,7 +48,7 @@ float4 ripple(float2 pos, float2 size, float time) {
 
 fragment float4 fragmentShader0(float4 frag_coord [[position]],
                                 constant SysUniforms& sys_u [[buffer(0)]],
-                                // constant Glsl3Uniforms& _u [[buffer(1)]],
+                                constant MyShaderData& _u [[buffer(1)]],
                                 texture2d<float> buffer0 [[texture(0)]],
                                 texture2d<float> buffer1 [[texture(1)]],
                                 texture2d<float> buffer2 [[texture(2)]],

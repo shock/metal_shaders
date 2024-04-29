@@ -1,0 +1,19 @@
+reloading shader with vsync on (works):
+
+RenderManager: vsyncOn: didSet( true )
+MetalView: stopRendering()
+RenderManager: reloadShaderFile()
+RenderManager: resetFrame()
+UniformManager: setupUniformsFromShader() - starting on thread <_NSMainThread: 0x6000019604c0>{number = 1, name = main}
+Uniforms successfully loaded from file.
+UniformManager: setupUniformsFromShader() - finished on thread <_NSMainThread: 0x6000019604c0>{number = 1, name = main}
+MetalView: loadShader() on thread <_NSMainThread: 0x6000019604c0>{number = 1, name = main}
+MetalView: reinitShaders() on thread <_NSMainThread: 0x6000019604c0>{number = 1, name = main}
+MetalView: setupShaders() on thread <_NSMainThread: 0x6000019604c0>{number = 1, name = main}
+MetalView: stopRendering()
+numBuffers: 4
+MetalView: setupShaders() - shaders loaded
+shaders loading finished
+UniformManager: mapUniformsToBuffer() - dirty - insideSetUniform: false on thread <_NSMainThread: 0x6000019604c0>{number = 1, name = main}
+
+reloading shader with vsync of (doesn't work):
