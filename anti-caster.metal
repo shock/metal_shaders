@@ -66,6 +66,23 @@ struct Scene {
     thread Light *lights;
 };
 
+struct RayData {
+    float3 ro;
+    float3 rd;
+    float md;
+    float3 pos;
+    float3 nor;
+    int matid;
+    int flags;
+    Scene scene;
+};
+
+struct Context {
+    constant SysUniforms& sys_u;
+    constant Glsl3Uniforms& _u;
+    thread RayData& rdat;
+};
+
 constant int MAX_LIGHTS = 1;
 
 void initLights(thread Light *lights, constant Glsl3Uniforms &_u ) {
@@ -80,23 +97,6 @@ Scene initScene(thread Scene &scene, constant Glsl3Uniforms &_u) {
     initLights(scene.lights, _u);
     return scene;
 }
-
-struct RayData {
-    float3 ro;
-    float3 rd;
-    float md;
-    float3 pos;
-    float3 nor;
-    int matid;
-    int flags;
-    Scene scene;
-};
-
-struct Context {
-    Glsl3Uniforms _u;
-    thread Light *lights;
-    RayData rdat;
-};
 
 float getCheckerboardColor(float x, float y, float size) {
     // Determine which square of the checkerboard the point falls into
@@ -149,8 +149,9 @@ float3 calcLight( thread RayData &rdat, constant Glsl3Uniforms &_u )
 }
 
 // float intersectRay( float3 ro, float3 rd, float px, float td, int mask, out float3 pos, out float3 nor, out int matid  ) {
-float intersectRay( float3 ro, float3 rd, float px, thread RayData &rdat )
+float intersectRay( float3 ro, float3 rd, float px, thread Context& _c )
 {
+    thread RayData & rdat = _c.rdat;
     rdat.matid = BACKDROP;
     float d;
     Scene scene = rdat.scene;
@@ -176,23 +177,28 @@ float intersectRay( float3 ro, float3 rd, float px, thread RayData &rdat )
     return rdat.md;
 }
 
-float3 getRayColor( float3 ro, float3 rd, float px, constant Glsl3Uniforms &_u ) {
+float3 getRayColor( float3 ro, float3 rd, float px, constant SysUniforms& sys_u, constant Glsl3Uniforms &_u ) {
     Scene scene;
     Light lights[MAX_LIGHTS];
     scene.lights = lights;
     initScene(scene, _u);
     float3 color = rd;
 
+
     RayData rdat = newRayData(ro, rd);
     rdat.scene = scene;
-
-    intersectRay( ro, rd, px, rdat );
+    Context context = Context { .sys_u = sys_u, ._u = _u, .rdat = rdat };
+    // context.rdat.flags = 1; // this doesn't work
+    // rdat.flags = 1; // this works
+    intersectRay( ro, rd, px, context );
     if( rdat.flags > 0 ) return float3(1,0,1);
     if( rdat.matid == BACKDROP ) {
         float stars = 0.15;
         float clouds = 0.2;
         float daylight = 0.2;
-        return skyDome(rd, stars, clouds, daylight, vmin(o_resolution));
+        float res = vmin(o_resolution);
+        float2 cloudOffset = float2(sys_u.time*1000);
+        return skyDome(rd, cloudOffset, stars, clouds, daylight, res);
     }
     if( rdat.matid == FLOOR ) {
         float c = chex(rdat.pos.xz/50);
@@ -232,7 +238,7 @@ float3 getPixelColor( float2 fragCoord, constant SysUniforms& sys_u, constant Gl
 #endif
     float3 rd = getRayDirection(cameraMatrix,ndc,le);
 
-    float3 color = getRayColor( ro, rd, px, _u );
+    float3 color = getRayColor( ro, rd, px, sys_u, _u );
 
     return color;
 }

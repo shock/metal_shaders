@@ -173,7 +173,8 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant Glsl3Uniforms &_u )
         float stars = 0.15;
         float clouds = 0.2;
         float daylight = 0.2;
-        return skyDome(rd, stars, clouds, daylight, vmin(o_resolution));
+        float2 cloudOffset = float2(0);
+        return skyDome(rd, cloudOffset, stars, clouds, daylight, vmin(o_resolution));
     }
     if( rdat.matid == FLOOR ) {
         float c = chex(rdat.pos.xz/10);
