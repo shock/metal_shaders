@@ -212,17 +212,18 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant Glsl3Uniforms &_u )
 #define CAM_ZOOM (0.1+ROT1*3.9)
 #endif
 
-float3 getPixelColor( float2 fragCoord, float2 u_resolution, constant Glsl3Uniforms &_u ) {
+float3 getPixelColor( float2 fragCoord, constant SysUniforms& sys_u, constant Glsl3Uniforms& _u ) {
     float scale = SCALE, le = CAM_ZOOM;
+    float2 u_resolution = sys_u.resolution;
     float minD = min(u_resolution.x, u_resolution.y);
     float2 ndc = 2.*(fragCoord-u_resolution*0.5) / u_resolution.x;
     ndc *= float2(1,-1);  // invert y-coord like OpenGL
     // float2 st = fragCoord/u_resolution;
-    float ya = AIM.x * AIM_SC * k2PI;
-    float xa = AIM.y * AIM_SC * k2PI;
+    float xa = AIM.x * AIM_SC * k2PI + sys_u.time*0.02;
+    float ya = AIM.y * AIM_SC * k2PI + 0.15*(sin(sys_u.time*0.1)+1);
     float px = 1.0/(minD*le);
 
-    float3x3 cameraMatrix = getCameraMatrix(ya, xa);
+    float3x3 cameraMatrix = getCameraMatrix(xa, ya);
     float3 lookAt = LOOK_AT;
     float3 ro = getCameraPosition(cameraMatrix,lookAt,scale,DISTANCE,PAN,PAN_SC);
 #ifdef CAMERA_LIGHT
@@ -256,7 +257,6 @@ struct Textures {
     array<texture2d<float>, numTextures> textures; // Array of 4 textures
 };
 
-// a
 fragment float4 fragmentShader0(float4 frag_coord [[position]],
                                 constant SysUniforms& sys_u [[buffer(0)]],
                                 constant Glsl3Uniforms& _u [[buffer(1)]],
@@ -264,7 +264,7 @@ fragment float4 fragmentShader0(float4 frag_coord [[position]],
                                )
 {
     float2 offset = float2(0,0);
-    float3 color = getPixelColor(frag_coord.xy+offset, sys_u.resolution, _u);
+    float3 color = getPixelColor(frag_coord.xy+offset, sys_u, _u);
     return float4(color, 1);
 }
 
@@ -275,7 +275,7 @@ fragment float4 fragmentShader1(float4 frag_coord [[position]],
                                )
 {
     float2 offset = float2(0.5,0);
-    float3 color = getPixelColor(frag_coord.xy+offset, sys_u.resolution, _u);
+    float3 color = getPixelColor(frag_coord.xy+offset, sys_u, _u);
     return float4(color, 1);
 }
 
@@ -288,7 +288,7 @@ fragment float4 fragmentShader2(float4 frag_coord [[position]],
                                )
 {
     float2 offset = float2(0.5,0.5);
-    float3 color = getPixelColor(frag_coord.xy+offset, sys_u.resolution, _u);
+    float3 color = getPixelColor(frag_coord.xy+offset, sys_u, _u);
     return float4(color, 1);
 }
 
@@ -301,7 +301,7 @@ fragment float4 fragmentShader3(float4 frag_coord [[position]],
                                )
 {
     float2 offset = float2(0,0.5);
-    float3 color = getPixelColor(frag_coord.xy+offset, sys_u.resolution, _u);
+    float3 color = getPixelColor(frag_coord.xy+offset, sys_u, _u);
     return float4(color, 1);
 }
 
