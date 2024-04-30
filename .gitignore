@@ -3,3 +3,4 @@
 **/*.metallib
 **/*.metallibsym
 *.code-workspace
+assets
