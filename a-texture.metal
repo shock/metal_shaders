@@ -12,7 +12,25 @@ using namespace metal;
 
 // @texture "../shaders/./assets/images/wood3.jpg"
 // @texture './assets/images/wood2.jpg'
-#define sampleTexture(texture, st) (texture.sample(sampler(mag_filter::linear, min_filter::linear, s_address::repeat, t_address::repeat), st))
+
+// sampler textureSampler(
+//     mag_filter::linear,
+//     min_filter::linear_mipmap_linear, // Use trilinear filtering
+//     mip_filter::linear,               // Linear mipmap interpolation
+//     s_address::repeat,
+//     t_address::repeat
+// );
+
+
+sampler textureSampler(
+    mag_filter::linear,
+    min_filter::linear, // Correct mipmap filter for linear filtering within mipmap levels
+    mip_filter::linear,            // Linear interpolation between mipmap levels
+    s_address::repeat,
+    t_address::repeat
+);
+
+#define sampleTexture(texture, st) (texture.sample(textureSampler, st))
 
 
 #define MT_NUM_BUFFERS 4
@@ -210,12 +228,13 @@ float3 getRayColor( float3 ro, float3 rd, float px, thread Context& _c ) {
     if( rdat.matid == FLOOR ) {
         // float c = chex(rdat.pos.xz/50);
         // color = o_col2 * (c/2+0.5);
-        color = sampleTexture(_c.textures[0], rdat.pos.xz/100).rgb;
+        color = sampleTexture(_c.textures[0], rdat.pos.xz/500).rgb;
+        color *= color;
     }
     if( rdat.matid == SPHERE ) {
         color = o_col1;
     }
-    return color * calcLight( rdat, _u );
+    return color * (calcLight( rdat, _u )*0.9+0.1);
 }
 
 #ifndef LOOK_AT
