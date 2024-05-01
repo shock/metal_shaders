@@ -6,16 +6,16 @@ o_gam_g, 0.0
 o_gam_b, 0.0
 o_aim, 0.0, 0.019
 o_aim_sc, 0.489
-o_pan, 0.002, 0.015
-o_pan_sc, 0.031
+o_pan, 0.002, 0.089
+o_pan_sc, 1.0
 o_distance, 0.282
 o_scale, 6.78
 o_fad1, 0.111
 o_fad2, 0.019
 o_fad3, 0.933
-o_fad4, 0.0
-o_fad5, 0.0
-o_fad6, 0.0
+o_fad4, 0.117
+o_fad5, 0.08
+o_fad6, 0.634
 o_mix1, 0.0
 o_mix2, 0.0
 o_mix3, 0.0
@@ -66,4 +66,4 @@ o_tog2, 0.0
 o_tog3, 0.0
 o_tog4, 0.0
 o_tog5, 0.0
-u_resolution, 701.0, 597.0
+u_resolution, 712.0, 610.0

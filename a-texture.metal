@@ -223,18 +223,18 @@ float3 getRayColor( float3 ro, float3 rd, float px, thread Context& _c ) {
         float daylight = 0.2;
         float res = vmin(o_resolution);
         float2 cloudOffset = float2(sys_u.time*1000);
-        return skyDome(rd, cloudOffset, stars, clouds, daylight, res);
+        return skyDome(rd, cloudOffset, o_fad6, o_fad4, o_fad5, res);
     }
     if( rdat.matid == FLOOR ) {
         // float c = chex(rdat.pos.xz/50);
         // color = o_col2 * (c/2+0.5);
-        color = sampleTexture(_c.textures[0], rdat.pos.xz/500).rgb;
+        color = sampleTexture(_c.textures[0], rdat.pos.xz/400).rgb;
         color *= color;
     }
     if( rdat.matid == SPHERE ) {
         color = o_col1;
     }
-    return color * (calcLight( rdat, _u )*0.9+0.1);
+    return color * (mix(calcLight( rdat, _u ),1,0.01));
 }
 
 #ifndef LOOK_AT

@@ -3,7 +3,7 @@
   "panels" : [
     [
       {
-        "activeTabID" : "675E2AB6-CA97-449E-A156-040583EF3850",
+        "activeTabID" : "FD9A87E0-3093-4016-829A-9AC9ADF09B33",
         "id" : "3B09DC03-3A38-4776-B478-74CBD92EDA80"
       }
     ]
@@ -223,7 +223,7 @@
                           "maximum" : 1,
                           "minimum" : -1,
                           "type" : "slider",
-                          "value" : -0.024
+                          "value" : 0.089
                         }
                       }
                     }
@@ -826,7 +826,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0
+                          "value" : 0.117
                         }
                       }
                     }
@@ -843,7 +843,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0
+                          "value" : 0.08
                         }
                       }
                     }
@@ -860,7 +860,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0
+                          "value" : 0.634
                         }
                       }
                     }
