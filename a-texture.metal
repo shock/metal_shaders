@@ -12,6 +12,8 @@ using namespace metal;
 
 // @texture "../shaders/./assets/images/wood3.jpg"
 // @texture './assets/images/wood2.jpg'
+#define sampleTexture(texture, st) (texture.sample(sampler(mag_filter::linear, min_filter::linear, s_address::repeat, t_address::repeat), st))
+
 
 #define MT_NUM_BUFFERS 4
 
@@ -83,7 +85,16 @@ struct RayData {
 struct Context {
     constant SysUniforms& sys_u;
     constant Glsl3Uniforms& _u;
+    array<texture2d<float>, 4> textures;
     thread RayData& rdat;
+
+    // Constructor to initialize references
+    Context(constant SysUniforms& sysUniforms, constant Glsl3Uniforms& glslUniforms,
+        array<texture2d<float>, 4> textures, thread RayData& rayData)
+    : sys_u(sysUniforms), _u(glslUniforms), textures(textures), rdat(rayData) {
+        // Initialize textures or other members if needed
+    }
+
 };
 
 constant int MAX_LIGHTS = 1;
@@ -180,20 +191,13 @@ float intersectRay( float3 ro, float3 rd, float px, thread Context& _c )
     return rdat.md;
 }
 
-float3 getRayColor( float3 ro, float3 rd, float px, constant SysUniforms& sys_u, constant Glsl3Uniforms &_u ) {
-    Scene scene;
-    Light lights[MAX_LIGHTS];
-    scene.lights = lights;
-    initScene(scene, _u);
-    float3 color = rd;
+float3 getRayColor( float3 ro, float3 rd, float px, thread Context& _c ) {
+    intersectRay( ro, rd, px, _c );
+    thread RayData &rdat = _c.rdat;
+    constant Glsl3Uniforms &_u = _c._u;
+    constant SysUniforms &sys_u = _c.sys_u;
 
-
-    RayData rdat = newRayData(ro, rd);
-    rdat.scene = scene;
-    Context context = Context { .sys_u = sys_u, ._u = _u, .rdat = rdat };
-    // context.rdat.flags = 1; // this doesn't work
-    // rdat.flags = 1; // this works
-    intersectRay( ro, rd, px, context );
+    float3 color;
     if( rdat.flags > 0 ) return float3(1,0,1);
     if( rdat.matid == BACKDROP ) {
         float stars = 0.15;
@@ -204,8 +208,9 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant SysUniforms& sys_u,
         return skyDome(rd, cloudOffset, stars, clouds, daylight, res);
     }
     if( rdat.matid == FLOOR ) {
-        float c = chex(rdat.pos.xz/50);
-        color = o_col2 * (c/2+0.5);
+        // float c = chex(rdat.pos.xz/50);
+        // color = o_col2 * (c/2+0.5);
+        color = sampleTexture(_c.textures[0], rdat.pos.xz/100).rgb;
     }
     if( rdat.matid == SPHERE ) {
         color = o_col1;
@@ -221,7 +226,7 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant SysUniforms& sys_u,
 #define CAM_ZOOM (0.1+ROT1*3.9)
 #endif
 
-float3 getPixelColor( float2 fragCoord, constant SysUniforms& sys_u, constant Glsl3Uniforms& _u ) {
+float3 getPixelColor( float2 fragCoord, constant SysUniforms& sys_u, constant Glsl3Uniforms& _u, array<texture2d<float>, 4> textures ) {
     float scale = SCALE, le = CAM_ZOOM;
     float2 u_resolution = sys_u.resolution;
     float minD = min(u_resolution.x, u_resolution.y);
@@ -241,7 +246,17 @@ float3 getPixelColor( float2 fragCoord, constant SysUniforms& sys_u, constant Gl
 #endif
     float3 rd = getRayDirection(cameraMatrix,ndc,le);
 
-    float3 color = getRayColor( ro, rd, px, sys_u, _u );
+    Scene scene;
+    Light lights[MAX_LIGHTS];
+    scene.lights = lights;
+    initScene(scene, _u);
+    RayData rdat = newRayData(ro, rd);
+    rdat.scene = scene;
+
+    Context _c = Context(sys_u, _u, textures, rdat);
+    float3 color = getRayColor( ro, rd, px, _c );
+
+
 
     return color;
 }
@@ -271,23 +286,24 @@ fragment float4 fragmentShader0(float4 frag_coord [[position]],
                                 constant Glsl3Uniforms& _u [[buffer(1)]],
                                 array<texture2d<float>, 4> buffers [[texture(0)]],
                                 texture2d<float> lastBuffer [[texture(4)]],
-                                array<texture2d<float>, 4> textures [[texture(5)]],
-                                sampler colorSampler [[ sampler(0) ]]
+                                array<texture2d<float>, 4> textures [[texture(5)]]
                                )
 {
     float2 offset = float2(0,0);
-    float3 color = getPixelColor(frag_coord.xy+offset, sys_u, _u);
+    float3 color = getPixelColor(frag_coord.xy+offset, sys_u, _u, textures);
     return float4(color, 1);
 }
 
 fragment float4 fragmentShader1(float4 frag_coord [[position]],
                                 constant SysUniforms& sys_u [[buffer(0)]],
                                 constant Glsl3Uniforms& _u [[buffer(1)]],
-                                array<texture2d<float>, 4> buffers [[texture(0)]]
+                                array<texture2d<float>, 4> buffers [[texture(0)]],
+                                texture2d<float> lastBuffer [[texture(4)]],
+                                array<texture2d<float>, 4> textures [[texture(5)]]
                                )
 {
     float2 offset = float2(0.5,0);
-    float3 color = getPixelColor(frag_coord.xy+offset, sys_u, _u);
+    float3 color = getPixelColor(frag_coord.xy+offset, sys_u, _u, textures);
     return float4(color, 1);
 }
 
@@ -296,11 +312,12 @@ fragment float4 fragmentShader2(float4 frag_coord [[position]],
                                 constant SysUniforms& sys_u [[buffer(0)]],
                                 constant Glsl3Uniforms& _u [[buffer(1)]],
                                 array<texture2d<float>, 4> buffers [[texture(0)]],
-                                texture2d<float> lastBuffer [[texture(4)]]
+                                texture2d<float> lastBuffer [[texture(4)]],
+                                array<texture2d<float>, 4> textures [[texture(5)]]
                                )
 {
     float2 offset = float2(0.5,0.5);
-    float3 color = getPixelColor(frag_coord.xy+offset, sys_u, _u);
+    float3 color = getPixelColor(frag_coord.xy+offset, sys_u, _u, textures);
     return float4(color, 1);
 }
 
@@ -309,13 +326,23 @@ fragment float4 fragmentShader3(float4 frag_coord [[position]],
                                 constant SysUniforms& sys_u [[buffer(0)]],
                                 constant Glsl3Uniforms& _u [[buffer(1)]],
                                 array<texture2d<float>, 4> buffers [[texture(0)]],
-                                texture2d<float> lastBuffer [[texture(4)]]
+                                texture2d<float> lastBuffer [[texture(4)]],
+                                array<texture2d<float>, 4> textures [[texture(5)]]
                                )
 {
     float2 offset = float2(0,0.5);
-    float3 color = getPixelColor(frag_coord.xy+offset, sys_u, _u);
+    float3 color = getPixelColor(frag_coord.xy+offset, sys_u, _u, textures);
     return float4(color, 1);
 }
+
+float3 funcTest( float2 fragCoord, constant SysUniforms& sys_u, constant Glsl3Uniforms& _u, array<texture2d<float>, 4> textures ) {
+  float3 color = textures[1].sample(sampler(mag_filter::linear, min_filter::linear), fragCoord.xy/sys_u.resolution).rgb;
+  return color*color;
+}
+
+struct Test {
+
+};
 
 fragment float4 fragmentShader4(float4 frag_coord [[position]],
                                 constant SysUniforms& sys_u [[buffer(0)]],
@@ -332,10 +359,12 @@ fragment float4 fragmentShader4(float4 frag_coord [[position]],
     }
     color = color / MT_NUM_BUFFERS;
     color = toneMap(color*o_exp*10);
-    if( frag_coord.x < sys_u.resolution.x / 2) {
-      color = textures[0].sample(sampler(mag_filter::linear, min_filter::linear), frag_coord.xy/sys_u.resolution).rgb;
-    } else {
-      color = textures[1].sample(sampler(mag_filter::linear, min_filter::linear), frag_coord.xy/sys_u.resolution).rgb;
-    }
+    // if( frag_coord.x < sys_u.resolution.x / 2) {
+    // //   color = textures[0].sample(sampler(mag_filter::linear, min_filter::linear, s_address::repeat, t_address::repeat), frag_coord.xy/sys_u.resolution*2).rgb;
+    //   color = sampleTexture(textures[0], frag_coord.xy/sys_u.resolution*2).rgb;
+    // } else {
+    //   // color = textures[1].sample(sampler(mag_filter::linear, min_filter::linear), frag_coord.xy/sys_u.resolution).rgb;
+    //   color = funcTest( frag_coord.xy, sys_u, _u, textures);
+    // }
     return float4(color.rgb, 1);
 }
