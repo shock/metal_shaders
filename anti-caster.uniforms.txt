@@ -10,7 +10,7 @@ o_pan, 0.002, -0.049
 o_pan_sc, 0.557
 o_distance, 0.101
 o_scale, 7.81
-o_fad1, 0.116
+o_fad1, 0.51
 o_fad2, 0.0
 o_fad3, 0.813
 o_fad4, 0.0

@@ -3,7 +3,7 @@
   "panels" : [
     [
       {
-        "activeTabID" : "FD9A87E0-3093-4016-829A-9AC9ADF09B33",
+        "activeTabID" : "6E195DD1-BAB7-4E1D-A2F6-EAD19E420972",
         "id" : "3B09DC03-3A38-4776-B478-74CBD92EDA80"
       }
     ]
@@ -55,7 +55,7 @@
                           "maximum" : 10,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 6.338
+                          "value" : 10
                         }
                       }
                     }
@@ -72,7 +72,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.004
+                          "value" : 0.512
                         }
                       }
                     }
@@ -139,7 +139,7 @@
                           "maximum" : 1,
                           "minimum" : -1,
                           "type" : "slider",
-                          "value" : 0.033
+                          "value" : 0.025
                         }
                       }
                     }
@@ -156,7 +156,7 @@
                           "maximum" : 1,
                           "minimum" : -1,
                           "type" : "slider",
-                          "value" : 0.023
+                          "value" : 0.028
                         }
                       }
                     }
@@ -189,7 +189,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 1
+                          "value" : 0.642
                         }
                       }
                     }
@@ -223,7 +223,7 @@
                           "maximum" : 1,
                           "minimum" : -1,
                           "type" : "slider",
-                          "value" : -0.049
+                          "value" : 0.092
                         }
                       }
                     }
@@ -775,7 +775,7 @@
                           "maximum" : 1,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 0.111
+                          "value" : 0.355
                         }
                       }
                     }

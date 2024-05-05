@@ -76,6 +76,7 @@ sampler textureSampler(
 #define BACKDROP 100
 #define FLOOR 1
 #define SPHERE 2
+#define WALL 3
 
 struct Light {
     float4 pos; // .w = type : 0-point,1-directional
@@ -85,6 +86,7 @@ struct Light {
 
 struct Scene {
     float4 plane;
+    float4 wall;
     float4 sphere;
     thread Light *lights;
 };
@@ -125,6 +127,7 @@ void initLights(thread Light *lights, constant Glsl3Uniforms &_u ) {
 
 Scene initScene(thread Scene &scene, constant Glsl3Uniforms &_u) {
     scene.plane = float4(0,1,0,0-100*o_fad2);
+    scene.wall = float4(0,0,1,0);
     scene.sphere = float4(0,0+300*o_fad3,0,70);
     initLights(scene.lights, _u);
     return scene;
@@ -188,6 +191,7 @@ float intersectRay( float3 ro, float3 rd, float px, thread Context& _c )
     float d;
     Scene scene = rdat.scene;
     float4 plane = scene.plane;
+    float4 wall = scene.wall;
     float4 sphere = scene.sphere;
 
     d = planeIntersect(ro, rd, plane);
@@ -197,6 +201,16 @@ float intersectRay( float3 ro, float3 rd, float px, thread Context& _c )
         if( cb == 1 || true ) {
             float s = sign(-dot(rd, plane.xyz));
             rdat.pos = ro + rd * d; rdat.nor = plane.xyz*s; rdat.matid = FLOOR; rdat.md = d;
+        }
+    }
+
+    d = planeIntersect(ro, rd, wall);
+    if( d > 0. && d < rdat.md ) {
+        float3 pos = ro + rd * d;
+        float cb = getCheckerboardColor(pos.x, pos.z, 40);
+        if( cb == 1 || true ) {
+            float s = sign(-dot(rd, wall.xyz));
+            rdat.pos = ro + rd * d; rdat.nor = wall.xyz*s; rdat.matid = WALL; rdat.md = d;
         }
     }
 
@@ -230,6 +244,16 @@ float3 getRayColor( float3 ro, float3 rd, float px, thread Context& _c ) {
         // color = o_col2 * (c/2+0.5);
         color = sampleTexture(_c.textures[0], rdat.pos.xz/400).rgb;
         color *= color;
+        if( rdat.pos.x < 0 ) color *=0;
+        if( rdat.pos.z < 0 ) color *=0;
+    }
+    if( rdat.matid == WALL ) {
+        // float c = chex(rdat.pos.xz/50);
+        // color = o_col2 * (c/2+0.5);
+        color = sampleTexture(_c.textures[0], rdat.pos.xy/400).rgb;
+        color *= color;
+        // if( rdat.pos.x < 0 ) color *=0;
+        if( rdat.pos.y < 0 ) color *=0;
     }
     if( rdat.matid == SPHERE ) {
         color = o_col1;
@@ -252,7 +276,7 @@ float3 getPixelColor( float2 fragCoord, constant SysUniforms& sys_u, constant Gl
     float2 ndc = 2.*(fragCoord-u_resolution*0.5) / u_resolution.x;
     ndc *= float2(1,-1);  // invert y-coord like OpenGL
     // float2 st = fragCoord/u_resolution;
-    float xa = AIM.x * AIM_SC * k2PI + sys_u.time*0.02;
+    float xa = AIM.x * AIM_SC * k2PI;
     float ya = AIM.y * AIM_SC * k2PI + 0.15*(sin(sys_u.time*0.1)+1);
     float px = 1.0/(minD*le);
 

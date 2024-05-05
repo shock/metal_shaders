@@ -4,13 +4,13 @@ o_blue, 0.0
 o_gam_r, 0.0
 o_gam_g, 0.0
 o_gam_b, 0.0
-o_aim, 0.0, 0.019
+o_aim, 0.025, 0.028
 o_aim_sc, 0.489
-o_pan, 0.002, -0.022
-o_pan_sc, 1.0
-o_distance, 0.004
-o_scale, 6.338
-o_fad1, 0.111
+o_pan, 0.0, 0.092
+o_pan_sc, 0.642
+o_distance, 0.512
+o_scale, 10.0
+o_fad1, 0.355
 o_fad2, 0.019
 o_fad3, 0.933
 o_fad4, 0.117
