@@ -2,18 +2,24 @@
 #define OSC_GLSL
 
 struct Glsl3Uniforms { // @uniform
-    float o_red;
-    float o_green;
-    float o_blue;
-    float o_gam_r;
-    float o_gam_g;
-    float o_gam_b;
-    float2 o_aim;
-    float o_aim_sc;
-    float2 o_pan;
-    float o_pan_sc;
-    float o_distance;
-    float o_scale;
+    float o_scale;      // @range: 1..10
+    float o_distance;   // @range: -1..1
+    float o_fov;
+    float o_aim_sc;     // @range: 1..10
+    float2 o_aim;       // @range: -1..1
+    float o_pan_sc;     // @range: 1..10
+    float2 o_pan;       // @range: -1..1
+
+    float3 o_col1;
+    float3 o_col2;
+    float3 o_col3;
+    float3 o_col4;
+    float3 o_col5;
+    float3 o_col6;
+
+    float o_long;
+    float o_exp;
+
     float o_fad1;
     float o_fad2;
     float o_fad3;
@@ -28,8 +34,6 @@ struct Glsl3Uniforms { // @uniform
     float o_rot2;
     float o_birot1;
     float o_birot2;
-    float o_long;
-    float o_exp;
     float o_bifad1;
     float o_bifad2;
     float o_lfad1;
@@ -44,6 +48,13 @@ struct Glsl3Uniforms { // @uniform
     float o_float5y;
     float o_float5z;
     float o_float5w;
+
+    float o_red;
+    float o_green;
+    float o_blue;
+    float o_gam_r;
+    float o_gam_g;
+    float o_gam_b;
 
     float2 o_multixy_1;
     float2 o_multixy_2;
@@ -63,14 +74,6 @@ struct Glsl3Uniforms { // @uniform
     float o_float1_2;
     float o_float1_3;
     float o_float1_4;
-
-
-    float3 o_col1;
-    float3 o_col2;
-    float3 o_col3;
-    float3 o_col4;
-    float3 o_col5;
-    float3 o_col6;
 
     float o_tog1;
     float o_tog2;
