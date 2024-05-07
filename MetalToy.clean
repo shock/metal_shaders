@@ -55,7 +55,7 @@
                           "maximum" : 10,
                           "minimum" : 0,
                           "type" : "slider",
-                          "value" : 7.361
+                          "value" : 8.306
                         }
                       }
                     }
@@ -92,7 +92,7 @@
                     "maximum" : 1,
                     "minimum" : 0,
                     "type" : "slider",
-                    "value" : 0.862
+                    "value" : 0.499
                   }
                 }
               }

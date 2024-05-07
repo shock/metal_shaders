@@ -196,6 +196,9 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant SysUniforms& sys_u,
         float stars = 0.15;
         float clouds = 0.2;
         float daylight = 0.2;
+        // float stars = o_fad5;
+        // float clouds = o_fad5;
+        // float daylight = o_fad4;
         float res = vmin(o_resolution);
         float2 cloudOffset = float2(sys_u.time*1000);
         return skyDome(rd, cloudOffset, stars, clouds, daylight, res);
