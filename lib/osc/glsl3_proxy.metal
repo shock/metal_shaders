@@ -1,5 +1,5 @@
-#ifndef OSC_GLSL
-#define OSC_GLSL
+#ifndef MT_OSC
+#define MT_OSC
 
 struct Glsl3Uniforms { // @uniform
     float o_scale;      // @range 1 .. 10
@@ -81,7 +81,7 @@ struct Glsl3Uniforms { // @uniform
     float o_tog4;
     float o_tog5;
 
-    float2 u_resolution;
+    // float2 u_resolution;
 };
 
 #define o_red (_u.o_red)
