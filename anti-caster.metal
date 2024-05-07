@@ -196,7 +196,7 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant SysUniforms& sys_u,
         // float stars = 0.15;
         // float clouds = 0.2;
         // float daylight = 0.2;
-        float stars = o_fad5;
+        float stars = o_fad6;
         float clouds = o_fad5;
         float daylight = o_fad4;
         float res = vmin(sys_u.resolution);

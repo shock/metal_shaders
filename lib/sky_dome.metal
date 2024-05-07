@@ -54,7 +54,7 @@ float3 skyTexture( float2 uv, float3 cloudColor ) {
   uv *= 0.0005;
   // float f = fbm3(uvw*0.002,6)*0.5+0.5;
   float f = fbm(uv,6)*0.5+0.5;
-  return mix(float3(0.1,0.2,0.8),cloudColor,f*f);
+  return mix(float3(0),cloudColor,f*f);
 }
 
 float3 skyDome(float3 rd, float2 cloudOffset, float starLevel, float clouds, float daylight, float resolution) {
@@ -63,13 +63,14 @@ float3 skyDome(float3 rd, float2 cloudOffset, float starLevel, float clouds, flo
   float3 tex = skyTexture(p.xz+cloudOffset,cloudColor);
   float hor = 1-abs(rd.y);
   hor = smoothstep(0.9,1,hor);
-  clouds = clouds/2 + 0.4;
-  float3 sky = tex * clouds;
+  // clouds = clouds/2 + 0.4;
+  float3 sky = mix(float3(0.1,0.2,0.8)*daylight,tex,clouds);
   // sky = mix(tex,mix(cloudColor,tex,0.2)*0.9,hor);
-  float3 strs = stars(rd,resolution) * starLevel;
-  float ss_mix = smoothstep(0.2,0.5,luminance(sky));
-  float3 strsx = mix(strs, sky, ss_mix);
-  sky = mix(sky, strsx, 1-daylight);
+  float3 strs = stars(rd,resolution);
+  // float ss_mix = smoothstep(0.2,0.5,luminance(sky));
+  // float3 strsx = mix(strs, sky, ss_mix);
+  // sky = mix(sky, strsx, 1-daylight);
+  sky = mix(sky, strs, starLevel);
   // sky = strsx * skyBrightness;
   // float3 oc = sun.xyz;
   // float h = -1, b = dot(rd, oc);

@@ -171,6 +171,6 @@ struct Glsl3Uniforms { // @uniform
 #define COL5 (o_col5)
 #define COL6 (o_col6)
 
-#define o_resolution (_u.u_resolution)
+#define o_resolution (sys_u.resolution)
 
 #endif
