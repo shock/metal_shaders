@@ -2,13 +2,13 @@
 #define OSC_GLSL
 
 struct Glsl3Uniforms { // @uniform
-    float o_scale;      // @range: 1..10
-    float o_distance;   // @range: -1..1
+    float o_scale;      // @range 1 .. 10
+    float o_distance;   // @range -1 .. 1
     float o_fov;
-    float o_aim_sc;     // @range: 1..10
-    float2 o_aim;       // @range: -1..1
-    float o_pan_sc;     // @range: 1..10
-    float2 o_pan;       // @range: -1..1
+    float o_aim_sc;     // @range 1 .. 10
+    float2 o_aim;       // @range -1 .. 1
+    float o_pan_sc;     // @range 1 .. 10
+    float2 o_pan;       // @range -1 .. 1
 
     float3 o_col1;
     float3 o_col2;
@@ -26,60 +26,60 @@ struct Glsl3Uniforms { // @uniform
     float o_fad4;
     float o_fad5;
     float o_fad6;
-    float o_mix1;
-    float o_mix2;
-    float o_mix3;
-    float o_mix4;
+    // float o_mix1;
+    // float o_mix2;
+    // float o_mix3;
+    // float o_mix4;
     float o_rot1;
     float o_rot2;
-    float o_birot1;
-    float o_birot2;
-    float o_bifad1;
-    float o_bifad2;
-    float o_lfad1;
-    float o_lfad2;
-    float o_lfad3;
-    float o_lmix1;
-    float o_lmix2;
-    float o_lmix3;
-    float o_lbfad1;
-    float3 o_color;
-    float o_float5x;
-    float o_float5y;
-    float o_float5z;
-    float o_float5w;
+    // float o_birot1;
+    // float o_birot2;
+    // float o_bifad1;
+    // float o_bifad2;
+    // float o_lfad1;
+    // float o_lfad2;
+    // float o_lfad3;
+    // float o_lmix1;
+    // float o_lmix2;
+    // float o_lmix3;
+    // float o_lbfad1;
+    // float3 o_color;
+    // float o_float5x;
+    // float o_float5y;
+    // float o_float5z;
+    // float o_float5w;
 
-    float o_red;
-    float o_green;
-    float o_blue;
-    float o_gam_r;
-    float o_gam_g;
-    float o_gam_b;
+    // float o_red;
+    // float o_green;
+    // float o_blue;
+    // float o_gam_r;
+    // float o_gam_g;
+    // float o_gam_b;
 
-    float2 o_multixy_1;
-    float2 o_multixy_2;
-    float2 o_multixy_3;
-    float2 o_multixy_4;
-    float2 o_multixy_5;
+    // float2 o_multixy_1;
+    // float2 o_multixy_2;
+    // float2 o_multixy_3;
+    // float2 o_multixy_4;
+    // float2 o_multixy_5;
 
-    float o_mfad1;
-    float o_mfad2;
-    float o_mrot1;
-    float o_mrot2;
-    float o_mrot3;
-    float o_mrot4;
+    // float o_mfad1;
+    // float o_mfad2;
+    // float o_mrot1;
+    // float o_mrot2;
+    // float o_mrot3;
+    // float o_mrot4;
 
 
-    float o_float1_1;
-    float o_float1_2;
-    float o_float1_3;
-    float o_float1_4;
+    // float o_float1_1;
+    // float o_float1_2;
+    // float o_float1_3;
+    // float o_float1_4;
 
-    float o_tog1;
-    float o_tog2;
-    float o_tog3;
-    float o_tog4;
-    float o_tog5;
+    // float o_tog1;
+    // float o_tog2;
+    // float o_tog3;
+    // float o_tog4;
+    // float o_tog5;
 
     float2 u_resolution;
 };

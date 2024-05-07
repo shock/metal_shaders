@@ -1,69 +1,24 @@
-o_red, 0.0
-o_green, 0.0
-o_blue, 0.0
-o_gam_r, 0.0
-o_gam_g, 0.0
-o_gam_b, 0.0
-o_aim, 0.0, 0.023
-o_aim_sc, 0.489
+o_scale, 7.361
+o_distance, -0.4215625
+o_fov, 0.115976565
+o_aim_sc, 1.0
+o_aim, 0.0, 0.013203125
+o_pan_sc, 1.0
 o_pan, 0.002, -0.049
-o_pan_sc, 0.557
-o_distance, 0.101
-o_scale, 7.81
-o_fad1, 0.51
-o_fad2, 0.0
-o_fad3, 0.813
-o_fad4, 0.0
-o_fad5, 0.0
-o_fad6, 0.0
-o_mix1, 0.0
-o_mix2, 0.0
-o_mix3, 0.0
-o_mix4, 0.0
-o_rot1, 0.384
-o_rot2, 0.0
-o_birot1, 0.043
-o_birot2, 0.041
+o_col1, 1.0, 1.0, 0.981
+o_col2, 0.938, 1.0, 0.569
+o_col3, 0.968, 0.966, 0.923
+o_col4, 0.569, 0.722, 0.811
+o_col5, 0.642, 0.824, 0.944
+o_col6, 0.665, 0.803, 0.889
 o_long, 0.083
 o_exp, 1.0
-o_bifad1, 0.0
-o_bifad2, 0.0
-o_lfad1, 0.0
-o_lfad2, 0.0
-o_lfad3, 0.0
-o_lmix1, 0.0
-o_lmix2, 0.0
-o_lmix3, 0.0
-o_lbfad1, 0.0
-o_color, 0.0, 0.0, 0.0,
-o_float5x, 0.0
-o_float5y, 0.0
-o_float5z, 0.0
-o_float5w, 0.0
-o_multixy_1, 0.0, 0.0
-o_multixy_2, 0.0, 0.0
-o_multixy_3, 0.0, 0.0
-o_multixy_4, 0.0, 0.0
-o_multixy_5, 0.0, 0.0
-o_mfad1, 0.0
-o_mfad2, 0.0
-o_mrot1, 0.0
-o_mrot2, 0.0
-o_mrot3, 0.0
-o_mrot4, 0.0
-o_float1_1, 0.0
-o_float1_2, 0.0
-o_float1_3, 0.0
-o_float1_4, 0.0
-o_col1, 1.0, 1.0, 0.981,
-o_col2, 0.938, 1.0, 0.569,
-o_col3, 0.968, 0.966, 0.923,
-o_col4, 0.569, 0.722, 0.811,
-o_col5, 0.642, 0.824, 0.944,
-o_col6, 0.665, 0.803, 0.889,
-o_tog1, 0.0
-o_tog2, 0.0
-o_tog3, 0.0
-o_tog4, 0.0
-o_tog5, 0.0
-u_resolution, 529.0, 495.0
+o_fad1, 0.29983073
+o_fad2, 0.0
+o_fad3, 1.0
+o_fad4, 0.043463543
+o_fad5, 0.0
+o_fad6, 0.0
+o_rot1, 0.32841146
+o_rot2, 0.0
+u_resolution, 1.0, 1.0
