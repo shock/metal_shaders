@@ -4,7 +4,7 @@
 struct Glsl3Uniforms { // @uniform
     float o_scale;      // @range 1 .. 10
     float o_distance;   // @range -1 .. 1
-    float o_fov;
+    float o_fov;        // @toggle
     float o_rot1;
     float o_aim_sc;     // @range 1 .. 10
     float2 o_aim;       // @range -1 .. 1
@@ -18,15 +18,15 @@ struct Glsl3Uniforms { // @uniform
     float o_fad5;
     float o_fad6;
 
+    float o_long;
+    float o_exp;
+
     float3 o_col1;
     float3 o_col2;
     float3 o_col3;
     float3 o_col4;
     float3 o_col5;
     float3 o_col6;
-
-    float o_long;
-    float o_exp;
 
     float o_mix1;
     float o_mix2;
