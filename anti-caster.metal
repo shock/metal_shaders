@@ -201,11 +201,12 @@ float3 getRayColor( float3 ro, float3 rd, float px, constant SysUniforms& sys_u,
         float daylight = o_fad4;
         float res = vmin(sys_u.resolution);
         float2 cloudOffset = float2(sys_u.time*1000);
-        return skyDome(rd, cloudOffset, stars, clouds, daylight, res);
+        return skyDome(rd, cloudOffset, daylight, clouds, stars, res);
     }
     if( rdat.matid == FLOOR ) {
         float c = chex(rdat.pos.xz/50);
-        color = o_col2 * (c/2+0.5);
+        c = filteredRadial(rdat.pos.xz/500, 50);
+        color = mix(o_col2, o_col4,(c/2+0.5))  ;
     }
     if( rdat.matid == SPHERE ) {
         color = o_col1;

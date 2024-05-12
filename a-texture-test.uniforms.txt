@@ -1,31 +1,32 @@
-o_red, 0.0
-o_green, 0.0
-o_blue, 0.0
-o_gam_r, 0.0
-o_gam_g, 0.0
-o_gam_b, 0.0
-o_aim, 0.025, 0.028
-o_aim_sc, 0.489
-o_pan, 0.0, 0.092
-o_pan_sc, 0.642
-o_distance, 0.512
 o_scale, 10.0
+o_distance, 0.512
+o_fov, 0.0
+o_rot1, 0.378
+o_aim_sc, 1.0
+o_aim, -0.005156253, -0.06151042
+o_pan_sc, 1.0
+o_pan, 0.0, 0.092
 o_fad1, 0.355
 o_fad2, 0.019
 o_fad3, 0.933
 o_fad4, 0.117
 o_fad5, 0.08
 o_fad6, 0.634
+o_long, 0.047
+o_exp, 1.0
+o_col1, 0.281, 0.794, 1.0
+o_col2, 0.571, 0.803, 0.0
+o_col3, 1.0, 1.0, 1.0
+o_col4, 0.626, 0.759, 0.0
+o_col5, 0.642, 0.824, 0.944
+o_col6, 0.665, 0.803, 0.889
 o_mix1, 0.0
 o_mix2, 0.0
 o_mix3, 0.0
 o_mix4, 0.0
-o_rot1, 0.378
 o_rot2, 0.0
 o_birot1, 0.043
 o_birot2, 0.041
-o_long, 0.047
-o_exp, 1.0
 o_bifad1, 0.0
 o_bifad2, 0.0
 o_lfad1, 0.0
@@ -35,11 +36,17 @@ o_lmix1, 0.0
 o_lmix2, 0.0
 o_lmix3, 0.0
 o_lbfad1, 0.0
-o_color, 0.0, 0.0, 0.0,
+o_color, 0.0, 0.0, 0.0
 o_float5x, 0.0
 o_float5y, 0.0
 o_float5z, 0.0
 o_float5w, 0.0
+o_red, 0.0
+o_green, 0.0
+o_blue, 0.0
+o_gam_r, 0.0
+o_gam_g, 0.0
+o_gam_b, 0.0
 o_multixy_1, 0.0, 0.0
 o_multixy_2, 0.0, 0.0
 o_multixy_3, 0.0, 0.0
@@ -55,15 +62,8 @@ o_float1_1, 0.0
 o_float1_2, 0.0
 o_float1_3, 0.0
 o_float1_4, 0.0
-o_col1, 0.281, 0.794, 1.0,
-o_col2, 0.571, 0.803, 0.0,
-o_col3, 1.0, 1.0, 1.0,
-o_col4, 0.626, 0.759, 0.0,
-o_col5, 0.642, 0.824, 0.944,
-o_col6, 0.665, 0.803, 0.889,
 o_tog1, 0.0
 o_tog2, 0.0
 o_tog3, 0.0
 o_tog4, 0.0
 o_tog5, 0.0
-u_resolution, 712.0, 610.0

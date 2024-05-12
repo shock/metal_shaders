@@ -218,12 +218,12 @@ float3 getRayColor( float3 ro, float3 rd, float px, thread Context& _c ) {
     float3 color;
     if( rdat.flags > 0 ) return float3(1,0,1);
     if( rdat.matid == BACKDROP ) {
-        float stars = 0.15;
-        float clouds = 0.2;
-        float daylight = 0.2;
-        float res = vmin(o_resolution);
+        float stars = o_fad6;
+        float clouds = o_fad5;
+        float daylight = o_fad4;
+        float res = vmin(sys_u.resolution);
         float2 cloudOffset = float2(sys_u.time*1000);
-        return skyDome(rd, cloudOffset, o_fad6, o_fad4, o_fad5, res);
+        return skyDome(rd, cloudOffset, daylight, clouds, stars, res);
     }
     if( rdat.matid == FLOOR ) {
         // float c = chex(rdat.pos.xz/50);
