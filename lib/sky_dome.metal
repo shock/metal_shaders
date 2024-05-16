@@ -65,6 +65,9 @@ float3 skyDome(float3 rd, float2 cloudOffset, float daylight, float cloudlevel, 
   float hor = 1-abs(rd.y);
   hor = smoothstep(0.9,1,hor);
   float3 skyColor = float3(0.1,0.2,0.8)*daylight;
+  cloudlevel *= cloudlevel;
+  starLevel *= starLevel;
+  daylight *= daylight;
   // cloudlevel = cloudlevel/2 + 0.4;
   // float3 sky = mix(skyColor,cloudTex.rgb,cloudlevel*(cloudTex.a));
   float3 sky = skyColor + cloudTex.rgb*cloudTex.a*cloudlevel;
